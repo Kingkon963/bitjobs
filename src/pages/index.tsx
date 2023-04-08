@@ -11,6 +11,7 @@ import useTheme from "src/hooks/useTheme";
 import ThemeSwitch from "@components/ThemeSwitch";
 import AvatarMenu from "@components/AvatarMenu";
 import Footer from "@components/Footer";
+import { UserRole } from "@prisma/client";
 
 const LandingPage: NextPage = () => {
   const { data: session } = useSession();
@@ -43,7 +44,7 @@ const LandingPage: NextPage = () => {
                   <button
                     className="btn-primary btn"
                     onClick={() => {
-                      void signIn();
+                      void signIn("google", {}, {userRole: UserRole.Employer});
                     }}
                   >
                     Sign in

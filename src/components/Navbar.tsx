@@ -1,14 +1,13 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import * as React from "react";
-import defaultProfilePic from "src/assets/svg/defaultProfilePic";
 import NavbarLink from "./NavbarLink";
 
 const Navbar: React.FC = () => {
   const session = useSession();
 
-  const handleLogout = () => {
-    signOut({
+  const handleLogout = async () => {
+    await signOut({
       callbackUrl: "/",
     });
   };
@@ -39,9 +38,9 @@ const Navbar: React.FC = () => {
           {session && (
             <>
               <div className="dropdown-end dropdown">
-                <button tabIndex={0} className="btn btn-circle bg-base-100 p-0">
+                {/* <button tabIndex={0} className="btn btn-circle bg-base-100 p-0">
                   {defaultProfilePic}
-                </button>
+                </button> */}
                 <ul
                   tabIndex={0}
                   className="dropdown-content menu rounded-box w-52 bg-base-300 p-2 shadow"
@@ -50,7 +49,7 @@ const Navbar: React.FC = () => {
                     <Link href="/profile">Profile</Link>
                   </li>
                   <li>
-                    <a onClick={() => handleLogout()}>Logout</a>
+                    <a onClick={() => void handleLogout()}>Logout</a>
                   </li>
                 </ul>
               </div>

@@ -47,7 +47,7 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-enum Role {
+enum UserRole {
     Employer
     Jobseeker
 }
@@ -60,7 +60,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    role          Role     @default(Jobseeker)
+    role          UserRole
 }
 
 model VerificationToken {

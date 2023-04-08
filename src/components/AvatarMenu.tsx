@@ -24,7 +24,7 @@ function AvatarMenu() {
             <h6 className="text-sm">{session?.user.email}</h6>
           </div>
 
-          <li onClick={() => signOut()}>
+          <li onClick={() => void signOut()}>
             <a>Sign out</a>
           </li>
         </ul>
