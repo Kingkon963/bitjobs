@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { parseCookies, setCookie, destroyCookie } from "nookies";
 
-const useTheme = (defaultTheme: Theme = "corporate") => {
+const useTheme = (defaultTheme: Theme = "light") => {
   const [theme, setThemeState] = useState<Theme>(defaultTheme);
 
   useEffect(() => {

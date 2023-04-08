@@ -9,7 +9,7 @@ export default function ThemeSwitch() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setTheme("mytheme");
-    } else setTheme("corporate");
+    } else setTheme("light");
 
     setDarkTheme(e.target.checked);
   };
