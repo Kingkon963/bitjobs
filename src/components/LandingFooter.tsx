@@ -1,6 +1,6 @@
 import React from "react";
 
-function Footer() {
+function LandingFooter() {
   return (
     <div className="bg-base-200 p-10 text-base-content ">
       <footer className="footer mx-auto max-w-screen-2xl">
@@ -47,4 +47,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default LandingFooter;

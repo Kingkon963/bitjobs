@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
       <nav className="navbar max-w-screen-2xl p-0">
         <div className="navbar-start flex items-center self-stretch">
           <Link href="/">
-            <a className="bold p-0 text-4xl normal-case tracking-wider">Britjobs</a>
+            <span className="bold p-0 text-4xl normal-case tracking-wider">Britjobs</span>
           </Link>
 
           <div className="ml-5">

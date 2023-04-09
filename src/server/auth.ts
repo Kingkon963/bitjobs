@@ -58,15 +58,15 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-      profile(profile: GoogleProfile) {
-        return {
-          id: profile.sub,
-          name: profile.name,
-          email: profile.email,
-          image: profile.picture,
-          role: UserRole?.Employer,
-        } as Awaited<User>
-      },
+      // profile(profile: GoogleProfile) {
+      //   return {
+      //     id: profile.sub,
+      //     name: profile.name,
+      //     email: profile.email,
+      //     image: profile.picture,
+      //     role: UserRole?.Employer,
+      //   } as Awaited<User>
+      // },
     })
     /**
      * ...add more providers here

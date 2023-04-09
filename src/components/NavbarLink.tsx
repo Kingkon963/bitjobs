@@ -10,7 +10,7 @@ const NavbarLink: React.FC<NavbarLink> = ({ url, text }) => {
   return (
     <span>
       <Link href={url}>
-        <a className="flex h-full flex-col justify-center bg-base-100 p-8">{text}</a>
+        <span className="flex h-full flex-col justify-center bg-base-100 p-8">{text}</span>
       </Link>
     </span>
   );
