@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx}", "node_modules/daisyui/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "node_modules/daisyui/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {},
   },
@@ -32,5 +35,9 @@ module.exports = {
       },
     ],
   },
-  plugins: [require("@tailwindcss/typography"), require("daisyui")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/aspect-ratio"),
+    require("daisyui"),
+  ],
 };

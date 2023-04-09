@@ -10,7 +10,9 @@ function LandingLayout({ children }: LandingLayoutProps) {
   return (
     <div>
       <LandingNavbar />
-      <main>{children}</main>
+      <main>
+        <div className="w-full max-w-screen-2xl mx-auto">{children}</div>
+      </main>
       <LandingFooter />
     </div>
   );
