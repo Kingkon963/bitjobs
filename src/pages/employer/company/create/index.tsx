@@ -47,7 +47,7 @@ const CompanyCreatePage: NextPage = () => {
               </label>
               <div className="mt-1">
                 <input
-                  {...register("name")}
+                  {...register("name", { required: true })}
                   type="text"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   placeholder="Company Name"
@@ -63,7 +63,7 @@ const CompanyCreatePage: NextPage = () => {
               </label>
               <div className="mt-1">
                 <input
-                  {...register("location")}
+                  {...register("location", { required: true })}
                   type="text"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   placeholder="Company Location"
