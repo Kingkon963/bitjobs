@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 function LandingNavbar() {
   const { data: session } = useSession();
   const router = useRouter();
+  console.log("🚀 ~ file: LandingNavbar.tsx:11 ~ LandingNavbar ~ session:", session)
 
   const isHiringPage = router.pathname === "/hiring";
 
@@ -20,6 +21,11 @@ function LandingNavbar() {
             <h1 className="text-5xl">Britjobs</h1>
           </Link>
           <div className="ml-auto flex items-center gap-10">
+            {session && session.user?.role === UserRole.Employer && (
+              <Link href="/employer" 
+              className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-focus"
+              >Employer Dashboard</Link>
+            )}
             <ThemeSwitch />
             {!session && !isHiringPage && (
               <>
