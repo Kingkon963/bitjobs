@@ -1,5 +1,5 @@
-import { type User } from '@prisma/client';
-import { UserRole } from '@prisma/client';
+import { type User } from "@prisma/client";
+import { UserRole } from "@prisma/client";
 import type { GetServerSidePropsContext } from "next";
 import {
   getServerSession,
@@ -31,7 +31,6 @@ declare module "next-auth" {
     // ...other properties
     role: UserRole;
   }
-
 }
 
 /**
@@ -42,15 +41,21 @@ declare module "next-auth" {
  **/
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    // async signIn({user, account, profile, credentials}) {
-
-    // },
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
         session.user.role = user.role;
       }
       return session;
+    },
+  },
+  events: {
+    signIn({ isNewUser, user }) {
+      if (isNewUser) {
+        if (user.role === UserRole?.Employer) {
+          // redirect to employer onboarding
+        }
+      }
     },
   },
   adapter: PrismaAdapter(prisma),
@@ -67,7 +72,7 @@ export const authOptions: NextAuthOptions = {
       //     role: UserRole?.Employer,
       //   } as Awaited<User>
       // },
-    })
+    }),
     /**
      * ...add more providers here
      *
@@ -78,12 +83,12 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      **/
   ],
-  // pages: {
-  //   signIn: "/auth/signin/google",
-  // },
+  pages: {
+    newUser: "/auth/new-user",
+  },
   theme: {
     colorScheme: "light",
-  }
+  },
 };
 
 /**
