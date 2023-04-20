@@ -80,4 +80,42 @@ model Company {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     userId    String   @unique
+    Job       Job[]
+}
+
+model JobCategory {
+    id        String   @id @default(cuid())
+    name      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Job       Job[]
+}
+
+enum EmploymentType {
+    FullTime
+    PartTime
+    Contract
+    Internship
+    Temporary
+}
+
+enum JobStatus {
+    Open
+    Closed
+    Draft
+}
+
+model Job {
+    id            String         @id @default(cuid())
+    title         String
+    description   String
+    location      String
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    company       Company        @relation(fields: [companyId], references: [id])
+    companyId     String
+    JobCategory   JobCategory?   @relation(fields: [jobCategoryId], references: [id])
+    jobCategoryId String?
+    emplomentType EmploymentType
+    status        JobStatus      @default(Draft)
 }

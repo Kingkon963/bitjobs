@@ -1,12 +1,11 @@
+import EmptyState from "@components/EmptyState";
+import { useRouter } from "next/router";
 import React from "react";
 
 type Tab = {
   name: string;
-}
-const tabs: Tab[] = [
-  { name: "Active" },
-  { name: "Closed" },
-];
+};
+const tabs: Tab[] = [{ name: "Active" }, { name: "Closed" }];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -14,11 +13,12 @@ function classNames(...classes: string[]) {
 
 function JobsPanelByTab() {
   const [selectedTab, setSelectedTab] = React.useState<Tab>(tabs[0] as Tab);
+  const router = useRouter();
 
   const handleTabChange = (tab: Tab) => {
     console.log("handleTabChange", tab);
     setSelectedTab(tab);
-  }
+  };
 
   return (
     <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
@@ -50,9 +50,11 @@ function JobsPanelByTab() {
                       tab.name === selectedTab.name
                         ? "border-indigo-500 text-indigo-600"
                         : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                      "whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium cursor-pointer select-none"
+                      "cursor-pointer select-none whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
                     )}
-                    aria-current={tab.name === selectedTab.name ? "page" : undefined}
+                    aria-current={
+                      tab.name === selectedTab.name ? "page" : undefined
+                    }
                     onClick={() => handleTabChange(tab)}
                   >
                     {tab.name}
@@ -63,7 +65,16 @@ function JobsPanelByTab() {
           </div>
         </div>
       </div>
-      <div className="px-4 py-5 sm:p-6">{/* Content goes here */}</div>
+      <div className="px-4 py-5 sm:p-6">
+        {selectedTab.name === "Active" && (
+          <EmptyState
+            title="No active jobs"
+            description="Get started by creating a new job."
+            buttonLabel="Create one"
+            buttonOnClick={() => void router.push("/employer/job/create")}
+          />
+        )}
+      </div>
     </div>
   );
 }
