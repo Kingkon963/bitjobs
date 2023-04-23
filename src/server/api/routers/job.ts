@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedEmployerProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
+import { JobStatus } from "@prisma/client";
 
 export const jobRouter = createTRPCRouter({
   createJob: protectedEmployerProcedure
@@ -104,5 +105,32 @@ export const jobRouter = createTRPCRouter({
       });
 
       return updatedJob;
+    }),
+
+  getJobsByStatus: protectedEmployerProcedure
+    .input(
+      z.object({
+        status: z.enum([JobStatus.Draft, JobStatus.Open, JobStatus.Closed]),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const company = await prisma.company.findUnique({
+        where: { userId: ctx.session.user.id },
+      });
+      if (!company) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Company not found",
+        });
+      }
+
+      const jobs = await prisma.job.findMany({
+        where: {
+          companyId: company.id,
+          status: input.status,
+        },
+      });
+
+      return jobs;
     }),
 });
