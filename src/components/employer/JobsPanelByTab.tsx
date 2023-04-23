@@ -5,7 +5,7 @@ import React from "react";
 type Tab = {
   name: string;
 };
-const tabs: Tab[] = [{ name: "Active" }, { name: "Closed" }];
+const tabs: Tab[] = [{ name: "Active" }, { name: "Closed" }, { name: "Draft" }];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

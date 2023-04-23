@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import PanelCard from "@components/PanelCard";
 import Stepper, { type StepProps } from "@components/Stepper";
+import JobDescriptionForm from "@components/employer/JobDescriptionForm";
+import JobLocationForm from "@components/employer/JobLocationForm";
 import EmployerLayout from "@components/layouts/EmployerLayout";
+import { api } from "@utils/api";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 
 const steps: StepProps[] = [
   { id: "01", name: "Job description", href: "?step=1", status: "complete" },
@@ -45,6 +45,7 @@ const JobCreationPage: NextPage = () => {
         {/* Step Content */}
         <div className="my-5">
           {currentStep === 1 && <JobDescriptionForm />}
+          {currentStep === 2 && <JobLocationForm />}
         </div>
 
         {/* Step Control Btns  */}
@@ -88,76 +89,6 @@ const JobCreationPage: NextPage = () => {
         </div>
       </>
     </EmployerLayout>
-  );
-};
-
-type JobDescriptionFormType = {
-  jobTitle: string;
-  jobDescription: string;
-};
-
-const JobDescriptionForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<JobDescriptionFormType>();
-
-  const onSubmit = (data: JobDescriptionFormType) => {
-    console.log(data);
-  };
-
-  return (
-    <div>
-      <PanelCard>
-        <form className="max-w-md" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label
-              htmlFor="jobTitle"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Job Title
-            </label>
-            <div className="mt-1">
-              <input
-                {...register("jobTitle", { required: true })}
-                type="text"
-                name="jobTitle"
-                id="jobTitle"
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                placeholder="Senior Software Engineer..."
-              />
-            </div>
-          </div>
-          <div className="mt-4">
-            <label
-              htmlFor="jobDescription"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Job Description
-            </label>
-            <div className="mt-1">
-              <textarea
-                {...register("jobDescription", { required: true })}
-                id="jobDescription"
-                name="jobDescription"
-                rows={12}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                placeholder="Write a short description of the job..."
-              />
-            </div>
-          </div>
-          <div className="mt-4">
-            <button
-              type="submit"
-              className="inline-flex items-center rounded bg-indigo-500 py-2 px-4 font-bold text-white hover:bg-indigo-700"
-            >
-              <span>Save</span>
-            </button>
-          </div>
-        </form>
-      </PanelCard>
-    </div>
   );
 };
 
