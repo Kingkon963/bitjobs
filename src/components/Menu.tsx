@@ -1,4 +1,4 @@
-import keyGen from "src/utils/genKey";
+import genKey from "src/utils/genKey";
 import Link from "next/link";
 import * as React from "react";
 import { MdDashboard, MdWork } from "react-icons/md";
@@ -22,7 +22,7 @@ const Menu: React.FC = () => {
       <ul className="menu overflow-y-auto bg-base-100  p-0 text-base-content">
         {links.map((link) => {
           return (
-            <li key={keyGen()}>
+            <li key={genKey()}>
               <Link href={link.url} passHref>
                 <a>
                   <span className="mr-2 text-xl">{link.icon}</span>

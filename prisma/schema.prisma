@@ -105,14 +105,25 @@ enum JobStatus {
     Draft
 }
 
+model LondonAddress {
+    id        String   @id @default(cuid())
+    location  String
+    borough   String[]
+    postcode  String[]
+    postTown  String[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
 model Address {
-    id       String  @id @default(cuid())
+    id       String   @id @default(cuid())
     line1    String
     line2    String?
     line3    String?
-    city     String
-    postcode String
-    country  String
+    borough  String[]
+    postcode String[]
+    postTown String[]
+    country  String   @default("United Kingdom")
     Job      Job[]
 }
 
