@@ -63,7 +63,7 @@ const JobLocationForm = () => {
               defaultArea={getJobForEditQuery.data?.location}
             />
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-start mt-5">
             <button
               className="inline-flex items-center rounded bg-indigo-500 py-2 px-4 font-bold text-white hover:bg-indigo-700"
               onClick={handleSave}

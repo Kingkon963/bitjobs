@@ -23,6 +23,7 @@ function LondonAreaSelector(props: LondonAreaSelectorProps) {
   );
   const getLondonAddressesQuery = api.address.getLondonAddresses.useQuery({
     query,
+    limit: 7,
   });
 
   useEffect(() => {
@@ -57,7 +58,10 @@ function LondonAreaSelector(props: LondonAreaSelectorProps) {
           }}
           displayValue={() => selectedArea?.location || ""}
         />
-        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+        <Combobox.Button
+          className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
+          disabled={getLondonAddressesQuery.isLoading}
+        >
           {getLondonAddressesQuery.isLoading && <Loading />}
           <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
         </Combobox.Button>

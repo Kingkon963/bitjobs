@@ -23,11 +23,13 @@ export const addressRouter = createTRPCRouter({
     .input(
       z.object({
         query: z.string().optional(),
+        limit: z.number().optional(),
       })
     )
     .query(async ({ input }) => {
       if (input.query) {
         return await prisma.londonAddress.findMany({
+          ...(input.limit && { take: input.limit }),
           where: {
             OR: [
               {
@@ -52,6 +54,10 @@ export const addressRouter = createTRPCRouter({
         });
       }
 
-      return await prisma.londonAddress.findMany();
+      if (input.limit)
+        return await prisma.londonAddress.findMany({
+          take: input.limit,
+        });
+      else return await prisma.londonAddress.findMany();
     }),
 });
