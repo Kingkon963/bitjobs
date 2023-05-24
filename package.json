@@ -19,7 +19,6 @@
   "dependencies": {
     "@headlessui/react": "^1.7.8",
     "@heroicons/react": "^1.0.6",
-    "@ideal-postcodes/address-finder": "^4.0.0",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.14.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",

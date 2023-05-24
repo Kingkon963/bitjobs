@@ -37,6 +37,7 @@ const JobCreationPage: NextPage = () => {
         <div className="my-5">
           {currStep === 1 && <JobDescriptionForm />}
           {currStep === 2 && <JobLocationForm />}
+          {currStep === 3 && <div>Step 3</div>}
         </div>
 
         {/* Step Control Btns  */}
