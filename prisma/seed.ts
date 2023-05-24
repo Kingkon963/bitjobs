@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 async function main() {
   console.log(`Start seeding ...`);
   await prisma.londonAddress.deleteMany({});
-  londonAreasList.map(async (area) => {
+  for (const area of londonAreasList) {
     await prisma.londonAddress.create({
       data: {
         location: area.location,
@@ -14,7 +14,7 @@ async function main() {
         postTown: area.postTown,
       },
     });
-  });
+  }
 }
 
 main()
