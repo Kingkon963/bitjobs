@@ -130,4 +130,40 @@ export const jobRouter = createTRPCRouter({
 
       return jobs;
     }),
+
+  publishJob: protectedEmployerProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const job = await prisma.job.findUnique({
+        where: { id: input.id },
+        include: {
+          company: {
+            select: {
+              userId: true,
+            },
+          },
+        },
+      });
+
+      if (!job) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Job not found" });
+      }
+
+      if (job.company.userId !== ctx.session.user.id) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Not your job" });
+      }
+
+      const updatedJob = await prisma.job.update({
+        where: { id: input.id },
+        data: {
+          status: JobStatus.Open,
+        },
+      });
+
+      return updatedJob;
+    }),
 });
