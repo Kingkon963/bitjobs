@@ -12,8 +12,8 @@ const steps: StepProps[] = [
   { id: "01", name: "Job description", href: "?step=1", status: "complete" },
   { id: "02", name: "Job location", href: "?step=2", status: "current" },
   { id: "03", name: "Employment type", href: "?step=3", status: "upcoming" },
-  { id: "04", name: "Company info", href: "?step=4", status: "upcoming" },
-  { id: "05", name: "Preview", href: "?step=5", status: "upcoming" },
+  // { id: "04", name: "Company info", href: "?step=4", status: "upcoming" },
+  { id: "04", name: "Preview", href: "?step=5", status: "upcoming" },
 ];
 
 const JobCreationPage: NextPage = () => {

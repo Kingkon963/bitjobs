@@ -18,9 +18,9 @@ interface LondonAreaSelectorProps {
 
 function LondonAreaSelector(props: LondonAreaSelectorProps) {
   const [query, setQuery] = useState("");
-  const [selectedArea, setselectedArea] = useState<LondonAddress | undefined>(
-    undefined
-  );
+  const [selectedArea, setselectedArea] = useState<
+    LondonAddress | Address | undefined
+  >(undefined);
   const getLondonAddressesQuery = api.address.getLondonAddresses.useQuery({
     query,
     limit: 7,
@@ -28,12 +28,21 @@ function LondonAreaSelector(props: LondonAreaSelectorProps) {
 
   useEffect(() => {
     if (!props.defaultArea) return;
-    const area = getLondonAddressesQuery?.data?.find?.(
-      (a) => a.location.toLowerCase() === props.defaultArea?.line1.toLowerCase()
-    );
-    if (!area) return;
-    setselectedArea(area);
+    // const area = getLondonAddressesQuery?.data?.find?.(
+    //   (a) => a.location.toLowerCase() === props.defaultArea?.line1.toLowerCase()
+    // );
+    // console.log(
+    //   "🚀 ~ file: LondonAreaSelector.tsx:34 ~ useEffect ~ area:",
+    //   area
+    // );
+    // if (!area) return;
+    setselectedArea(props.defaultArea);
   }, [getLondonAddressesQuery?.data, props.defaultArea]);
+
+  const areaIsAddress = (area: LondonAddress | Address | undefined) => {
+    if (!area) return false;
+    return "line1" in area;
+  };
 
   return (
     <Combobox
@@ -56,7 +65,11 @@ function LondonAreaSelector(props: LondonAreaSelectorProps) {
             const val = event.target.value;
             setQuery(val);
           }}
-          displayValue={() => selectedArea?.location || ""}
+          displayValue={() =>
+            (areaIsAddress(selectedArea)
+              ? (selectedArea as Address)?.line1
+              : (selectedArea as LondonAddress)?.location) || ""
+          }
         />
         <Combobox.Button
           className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
