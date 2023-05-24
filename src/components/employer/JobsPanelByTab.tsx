@@ -2,6 +2,7 @@ import EmptyState from "@components/EmptyState";
 import { useRouter } from "next/router";
 import React from "react";
 import DraftJobList from "./DraftJobList";
+import OpenJobList from "./OpenJobList";
 
 type Tab = {
   name: string;
@@ -67,14 +68,7 @@ function JobsPanelByTab() {
         </div>
       </div>
       <div className="px-4 py-5 sm:p-6">
-        {selectedTab.name === "Active" && (
-          <EmptyState
-            title="No active jobs"
-            description="Get started by creating a new job."
-            buttonLabel="Create one"
-            buttonOnClick={() => void router.push("/employer/job/create")}
-          />
-        )}
+        {selectedTab.name === "Active" && <OpenJobList />}
 
         {selectedTab.name === "Closed" && (
           <EmptyState

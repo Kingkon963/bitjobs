@@ -19,20 +19,25 @@ const steps: StepProps[] = [
 
 const JobCreationPage: NextPage = () => {
   const router = useRouter();
-  const { currStep, totalStep, setStep, goNextStep, goPrevStep } =
+  const { currStep, totalStep, setStep, goNextStep, goPrevStep, setJobId } =
     useCreateJobStore();
-  const { step } = router.query;
+  const { step, jobId } = router.query;
 
   useEffect(() => {
     if (step) {
       setStep(Number(step));
     }
-  }, [setStep, step]);
+    if (jobId && typeof jobId === "string") {
+      setJobId(jobId);
+    }
+  }, [jobId, setJobId, setStep, step]);
 
   return (
     <EmployerLayout>
       <>
-        <h1 className="text-2xl font-semibold">Create a new job</h1>
+        <h1 className="text-2xl font-semibold">
+          <span>Tell us about your Job</span>
+        </h1>
         <div className="my-5">
           <Stepper definedSteps={steps} doneTill={currStep - 1} />
         </div>

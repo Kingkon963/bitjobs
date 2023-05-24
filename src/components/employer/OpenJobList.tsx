@@ -1,25 +1,24 @@
+import React from "react";
 import EmptyState from "@components/EmptyState";
 import JobStackList from "@components/JobStackList";
-import Loading from "@components/Loading";
 import { JobStatus } from "@prisma/client";
 import { api } from "@utils/api";
 import { useRouter } from "next/router";
-import React from "react";
+import Loading from "@components/Loading";
 
-function DraftJobList() {
+function OpenJobList() {
   const router = useRouter();
-  const getDraftJobsQuery = api.job.getJobsByStatus.useQuery({
-    status: JobStatus.Draft,
+  const getOpenJobsQuery = api.job.getJobsByStatus.useQuery({
+    status: JobStatus.Open,
   });
-
   return (
     <div>
-      {getDraftJobsQuery.isLoading && <Loading />}
-      {getDraftJobsQuery.isError && <div>Error</div>}
-      {getDraftJobsQuery.data && getDraftJobsQuery.data.length !== 0 && (
-        <JobStackList jobs={getDraftJobsQuery.data} />
+      {getOpenJobsQuery.isLoading && <Loading />}
+      {getOpenJobsQuery.isError && <div>Error</div>}
+      {getOpenJobsQuery.data && getOpenJobsQuery.data.length !== 0 && (
+        <JobStackList jobs={getOpenJobsQuery.data} />
       )}
-      {getDraftJobsQuery.data && getDraftJobsQuery.data.length === 0 && (
+      {getOpenJobsQuery.data && getOpenJobsQuery.data.length === 0 && (
         <EmptyState
           title="No draft jobs"
           description="Get started by creating a new job."
@@ -31,4 +30,4 @@ function DraftJobList() {
   );
 }
 
-export default DraftJobList;
+export default OpenJobList;
