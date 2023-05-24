@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedEmployerProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
-import { JobStatus } from "@prisma/client";
+import { EmploymentType, JobStatus } from "@prisma/client";
 
 export const jobRouter = createTRPCRouter({
   createJob: protectedEmployerProcedure
@@ -73,6 +73,7 @@ export const jobRouter = createTRPCRouter({
         title: z.string().optional(),
         description: z.string().optional(),
         addressId: z.string().optional(),
+        employmentType: z.nativeEnum(EmploymentType).optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -97,11 +98,7 @@ export const jobRouter = createTRPCRouter({
 
       const updatedJob = await prisma.job.update({
         where: { id: input.id },
-        data: {
-          title: input.title,
-          description: input.description,
-          addressId: input.addressId,
-        },
+        data: input,
       });
 
       return updatedJob;

@@ -1,5 +1,6 @@
 import Stepper, { type StepProps } from "@components/Stepper";
 import JobDescriptionForm from "@components/employer/JobDescriptionForm";
+import JobEmploymentTypeForm from "@components/employer/JobEmploymentTypeForm";
 import JobLocationForm from "@components/employer/JobLocationForm";
 import EmployerLayout from "@components/layouts/EmployerLayout";
 import { type NextPage } from "next";
@@ -37,7 +38,7 @@ const JobCreationPage: NextPage = () => {
         <div className="my-5">
           {currStep === 1 && <JobDescriptionForm />}
           {currStep === 2 && <JobLocationForm />}
-          {currStep === 3 && <div>Step 3</div>}
+          {currStep === 3 && <JobEmploymentTypeForm />}
         </div>
 
         {/* Step Control Btns  */}

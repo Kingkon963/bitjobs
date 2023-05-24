@@ -96,7 +96,6 @@ enum EmploymentType {
     PartTime
     Contract
     Internship
-    Temporary
 }
 
 enum JobStatus {
@@ -128,17 +127,17 @@ model Address {
 }
 
 model Job {
-    id            String         @id @default(cuid())
-    title         String
-    description   String
-    location      Address?       @relation(fields: [addressId], references: [id])
-    createdAt     DateTime       @default(now())
-    updatedAt     DateTime       @updatedAt
-    company       Company        @relation(fields: [companyId], references: [id])
-    companyId     String
-    JobCategory   JobCategory?   @relation(fields: [jobCategoryId], references: [id])
-    jobCategoryId String?
-    emplomentType EmploymentType @default(FullTime)
-    status        JobStatus      @default(Draft)
-    addressId     String?
+    id             String         @id @default(cuid())
+    title          String
+    description    String
+    location       Address?       @relation(fields: [addressId], references: [id])
+    createdAt      DateTime       @default(now())
+    updatedAt      DateTime       @updatedAt
+    company        Company        @relation(fields: [companyId], references: [id])
+    companyId      String
+    JobCategory    JobCategory?   @relation(fields: [jobCategoryId], references: [id])
+    jobCategoryId  String?
+    employmentType EmploymentType @default(FullTime)
+    status         JobStatus      @default(Draft)
+    addressId      String?
 }

@@ -2,6 +2,7 @@ import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import NextNProgress from "nextjs-progressbar";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { api } from "../utils/api";
 
@@ -15,6 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <NextNProgress />
       <Component {...pageProps} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </SessionProvider>
   );
 };
