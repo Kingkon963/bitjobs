@@ -2,11 +2,14 @@ import React from "react";
 import { useRouter } from "next/router";
 import { api } from "@utils/api";
 import Loading from "@components/Loading";
+import useCreateJobStore from "~/hooks/stores/useCreateJobStore";
 
 function JobPublishButton({ jobId }: { jobId: string }) {
   const router = useRouter();
+  const { reset } = useCreateJobStore();
   const publishJobMutation = api.job.publishJob.useMutation({
     onSuccess: async () => {
+      reset();
       await router.push("/employer");
     },
   });

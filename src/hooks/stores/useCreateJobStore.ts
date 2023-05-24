@@ -8,6 +8,7 @@ interface CreateJobStore {
   goNextStep: () => void;
   goPrevStep: () => void;
   setStep: (step: number) => void;
+  reset: () => void;
 }
 
 const useCreateJobStore = create<CreateJobStore>()((set) => ({
@@ -27,6 +28,7 @@ const useCreateJobStore = create<CreateJobStore>()((set) => ({
       currStep: state.currStep - 1 < 1 ? 1 : state.currStep - 1,
     })),
   setStep: (step) => set(() => ({ currStep: step })),
+  reset: () => set(() => ({ currStep: 1, jobId: "" })),
 }));
 
 export default useCreateJobStore;
