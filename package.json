@@ -7,8 +7,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma db push --accept-data-loss --force-reset && next build",
-    "db:push": "prisma db push --accept-data-loss --force-reset",
+    "build": "prisma db push --accept-data-loss  && prisma db seed && next build",
+    "db:push": "prisma db push --accept-data-loss ",
     "db:gen": "prisma generate",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
