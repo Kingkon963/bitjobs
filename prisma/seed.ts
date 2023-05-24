@@ -24,6 +24,17 @@ main()
   .catch((e) => {
     console.log("seeding failed", e);
     process.exit(1);
+  })
+  .finally(() => {
+    prisma
+      .$disconnect()
+      .then(() => {
+        console.log("prisma disconnected");
+      })
+      .catch((e) => {
+        console.log("disconnect failed", e);
+        process.exit(1);
+      });
   });
 
 export default main;
