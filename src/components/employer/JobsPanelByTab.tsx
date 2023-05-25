@@ -7,7 +7,12 @@ import OpenJobList from "./OpenJobList";
 type Tab = {
   name: string;
 };
-const tabs: Tab[] = [{ name: "Active" }, { name: "Closed" }, { name: "Draft" }];
+const tabs: Tab[] = [
+  { name: "Active" },
+  { name: "Pending" },
+  { name: "Closed" },
+  { name: "Draft" },
+];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

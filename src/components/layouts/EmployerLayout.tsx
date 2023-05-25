@@ -53,7 +53,7 @@ const navigation: NavigationItem[] = [
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Sign out", href: "/api/auth/signout" },
 ];
 
 function classNames(...classes: string[]) {
@@ -141,11 +141,15 @@ export default function EmployerLayout({
                   </div>
                 </Transition.Child>
                 <div className="flex flex-shrink-0 items-center px-4">
-                  <img
+                  <h1 className="text-2xl font-bold tracking-wider text-white">
+                    BitJobs
+                  </h1>
+
+                  {/* <img
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/workflow-logo-indigo-300-mark-white-text.svg"
                     alt="Workflow"
-                  />
+                  /> */}
                 </div>
                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
                   <nav className="space-y-1 px-2">
@@ -182,11 +186,14 @@ export default function EmployerLayout({
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-grow flex-col overflow-y-auto bg-indigo-700 pt-5">
             <div className="flex flex-shrink-0 items-center px-4">
-              <img
+              {/* <img
                 className="h-8 w-auto"
                 src="https://tailwindui.com/img/logos/workflow-logo-indigo-300-mark-white-text.svg"
                 alt="Workflow"
-              />
+              /> */}
+              <h1 className="text-2xl font-bold tracking-wider text-white">
+                BitJobs
+              </h1>
             </div>
             <div className="mt-5 flex flex-1 flex-col">
               <nav className="flex-1 space-y-1 px-2 pb-4">
