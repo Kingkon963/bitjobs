@@ -1,6 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { CalendarIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { type Job } from "@prisma/client";
+import JobCardForEmployer from "./employer/JobCardForEmployer";
 
 const positions = [
   {
@@ -102,54 +102,7 @@ export default function JobStackList({ jobs }: JobStackListProps) {
       <ul role="list" className="divide-y divide-gray-200">
         {jobs.map((job) => (
           <li key={job.id}>
-            <a href="#" className="block hover:bg-gray-50">
-              <div className="flex items-center px-4 py-4 sm:px-6">
-                <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
-                  <div className="truncate">
-                    <div className="flex text-sm">
-                      <p className="truncate font-medium text-indigo-600">
-                        {job.title}
-                      </p>
-                      {/* <p className="ml-1 flex-shrink-0 font-normal text-gray-500">
-                        in {job.department}
-                      </p> */}
-                    </div>
-                    {/* <div className="mt-2 flex">
-                      <div className="flex items-center text-sm text-gray-500">
-                        <CalendarIcon
-                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        <p>
-                          Closing on{" "}
-                          <time dateTime={job.closeDate}>
-                            {job.closeDateFull}
-                          </time>
-                        </p>
-                      </div>
-                    </div> */}
-                  </div>
-                  {/* <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
-                    <div className="flex -space-x-1 overflow-hidden">
-                      {position.applicants.map((applicant) => (
-                        <img
-                          key={applicant.email}
-                          className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-                          src={applicant.imageUrl}
-                          alt={applicant.name}
-                        />
-                      ))}
-                    </div>
-                  </div> */}
-                </div>
-                <div className="ml-5 flex-shrink-0">
-                  <ChevronRightIcon
-                    className="h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </div>
-              </div>
-            </a>
+            <JobCardForEmployer jobId={job.id} />
           </li>
         ))}
       </ul>
