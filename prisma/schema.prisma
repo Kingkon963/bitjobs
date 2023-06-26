@@ -27,12 +27,12 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String?  @db.Text
-    access_token      String?  @db.Text
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String?  @db.Text
+    id_token          String? @db.Text
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -47,7 +47,7 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-enum Role {
+enum UserRole {
     Employer
     Jobseeker
 }
@@ -60,7 +60,8 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    role          Role     @default(Jobseeker)
+    role          UserRole
+    Company       Company[]
 }
 
 model VerificationToken {
@@ -69,4 +70,74 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Company {
+    id        String   @id @default(cuid())
+    name      String
+    location  String
+    user      User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    userId    String   @unique
+    Job       Job[]
+}
+
+model JobCategory {
+    id        String   @id @default(cuid())
+    name      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Job       Job[]
+}
+
+enum EmploymentType {
+    FullTime
+    PartTime
+    Contract
+    Internship
+}
+
+enum JobStatus {
+    Open
+    Closed
+    Draft
+}
+
+model LondonAddress {
+    id        String   @id @default(cuid())
+    location  String
+    borough   String[]
+    postcode  String[]
+    postTown  String[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Address {
+    id       String   @id @default(cuid())
+    line1    String
+    line2    String?
+    line3    String?
+    borough  String[]
+    postcode String[]
+    postTown String[]
+    country  String   @default("United Kingdom")
+    Job      Job[]
+}
+
+model Job {
+    id             String         @id @default(cuid())
+    title          String
+    description    String
+    location       Address?       @relation(fields: [addressId], references: [id])
+    createdAt      DateTime       @default(now())
+    updatedAt      DateTime       @updatedAt
+    company        Company        @relation(fields: [companyId], references: [id])
+    companyId      String
+    JobCategory    JobCategory?   @relation(fields: [jobCategoryId], references: [id])
+    jobCategoryId  String?
+    employmentType EmploymentType @default(FullTime)
+    status         JobStatus      @default(Draft)
+    addressId      String?
 }
