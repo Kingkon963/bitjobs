@@ -134,6 +134,21 @@ const enforceUserIsEmployer = t.middleware(({ ctx, next }) => {
   });
 });
 
+const enforceUserIsJobseeker = t.middleware(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  if (ctx.session.user.role !== UserRole.Jobseeker) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Not a job seeker" });
+  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
 /**
  * Protected (authenticated) procedure
  *
@@ -147,4 +162,8 @@ export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
 export const protectedEmployerProcedure = t.procedure.use(
   enforceUserIsEmployer
+);
+
+export const protectedJobseekerProcedure = t.procedure.use(
+  enforceUserIsJobseeker
 );
