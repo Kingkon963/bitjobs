@@ -104,7 +104,7 @@ enum JobStatus {
     Draft
 }
 
-model LondonAddress {
+model LondonAddress {  // This is a model for the London Address dropdown
     id        String   @id @default(cuid())
     location  String
     borough   String[]

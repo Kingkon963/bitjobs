@@ -21,8 +21,8 @@ main()
   .then(() => {
     console.log("seeding done");
   })
-  .catch((e) => {
-    console.log("seeding failed", e);
+  .catch(() => {
+    console.log("seeding failed");
     process.exit(1);
   })
   .finally(() => {
@@ -31,8 +31,8 @@ main()
       .then(() => {
         console.log("prisma disconnected");
       })
-      .catch((e) => {
-        console.log("disconnect failed", e);
+      .catch(() => {
+        console.log("disconnect failed");
         process.exit(1);
       });
   });
