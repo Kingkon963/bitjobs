@@ -173,6 +173,19 @@ export const jobRouter = createTRPCRouter({
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        company: {
+          select: {
+            name: true,
+          }
+        },
+        location: {
+          select: {
+            line1: true,
+            borough: true,
+          }
+        },
+      }
     });
 
     return jobs;

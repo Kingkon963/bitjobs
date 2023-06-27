@@ -14,7 +14,7 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
     <div className="mx-auto max-w-screen-xl mt-4">
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <Link href={"/"} className="btn-ghost btn text-xl normal-case">
+          <Link href={"/"} className="btn-ghost btn text-4xl normal-case">
             BitJobs
           </Link>
         </div>
