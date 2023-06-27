@@ -5,7 +5,7 @@ interface JobCardProps {
   job: Job & {
     company: {
       name: string;
-    }
+    };
   };
 }
 
@@ -48,7 +48,8 @@ function JobCard(props: JobCardProps) {
             <div className="mt-4 flex gap-2">
               <div className="flex-1">
                 <p className="text-base-content text-opacity-60">
-                  {job.description}
+                  {job.description.split(" ").slice(0, 20).join(" ")}
+                  {job.description.split(" ").length > 20 ? "..." : ""}
                 </p>
               </div>
             </div>
