@@ -64,11 +64,13 @@ const JobProducer = {
     for (let i = 0; i < JobProducer.totalAmount; i++) {
       const jobTitle = (await Completion("Generate a job title: ")).trim();
       const jobDescription = (await Completion(`Generate a job description for ${jobTitle}: `)).trim();
-      
+
       await JobProducer.createEntity({
         title: jobTitle,
         description: jobDescription,
       });
+
+      console.log(`JobProducer: ${i + 1}/${JobProducer.totalAmount} jobs created`);
     }
   },
 };

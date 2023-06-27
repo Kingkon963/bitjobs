@@ -5,9 +5,10 @@ const Completion = async (prompt: string) => {
     {
       model: "text-davinci-003",
       prompt: prompt,
+      max_tokens: 4000
     },
     {
-      timeout: 10000,
+      // timeout: 10000,
       headers: {
         "Content-Type": "application/json",
       },

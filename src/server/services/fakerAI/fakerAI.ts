@@ -3,7 +3,8 @@ import JobProducer from "./producers/job.producer.js";
 export default class FakerAI {
 
   static async start() {
-    JobProducer.setTotalAmount(3);
+    console.log("FakerAI: Starting...");
+    JobProducer.setTotalAmount(1);
     await JobProducer.produce();
   }
 }
