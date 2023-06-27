@@ -178,7 +178,13 @@ export const jobRouter = createTRPCRouter({
           select: {
             name: true,
           }
-        }
+        },
+        location: {
+          select: {
+            line1: true,
+            borough: true,
+          }
+        },
       }
     });
 

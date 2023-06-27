@@ -10,7 +10,7 @@ const JobseekerPage: NextPage = () => {
         <div className="flex-1 border p-2">
           <JobFeed />
         </div>
-        <div className="max-w-xs flex-1 border p-2">c</div>
+        {/* <div className="max-w-xs flex-1 border p-2">c</div> */}
       </div>
     </JobseekerLayout>
   );

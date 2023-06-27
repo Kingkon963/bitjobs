@@ -6,6 +6,10 @@ interface JobCardProps {
     company: {
       name: string;
     };
+    location: {
+      line1: string;
+      borough: string[];
+    } | null;
   };
 }
 
@@ -22,7 +26,10 @@ function JobCard(props: JobCardProps) {
               <div className="flex-1">
                 <h2 className="card-title">{job.title}</h2>
                 <p className="text-base-content text-opacity-60">
-                  {job.employmentType}, <b>{job.company?.name}</b>
+                  {job.employmentType} @ <b>{job.company?.name}</b>
+                </p>
+                <p className="text-base-content text-opacity-60">
+                  📍 {job.location?.line1}, {job.location?.borough?.at(0)}
                 </p>
               </div>
               <div className="flex-none">
