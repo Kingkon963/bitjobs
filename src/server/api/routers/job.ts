@@ -181,7 +181,7 @@ export const jobRouter = createTRPCRouter({
       if (!input.cursor) input.cursor = 2;
       const POST_PER_PAGE = 2;
       const take = input.cursor * POST_PER_PAGE;
-
+      const totalJobs = await prisma.job.count();
       const jobs = await prisma.job.findMany({
         take,
         orderBy: {
@@ -202,6 +202,9 @@ export const jobRouter = createTRPCRouter({
         },
       });
 
-      return jobs;
+      return {
+        jobs,
+        hasMore: totalJobs > take,
+      };
     }),
 });

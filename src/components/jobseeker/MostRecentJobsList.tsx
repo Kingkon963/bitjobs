@@ -19,18 +19,14 @@ function MostRecentJobsList() {
     threshold: 1,
   });
   React.useEffect(() => {
-    if (intersection?.isIntersecting) {
+    if (intersection?.isIntersecting && getMostRecentJobQuery.data?.hasMore) {
       setPage((prev) => prev + 1);
     }
-  }, [intersection?.isIntersecting]);
-
-  // const hasMorePosts =
-  //   getMostRecentJobQuery.data?.length !== previousQueryData?.length ||
-  //   page === 1;
+  }, [getMostRecentJobQuery.data?.hasMore, intersection?.isIntersecting]);
 
   return (
     <div className="mt-4 grid grid-cols-1 gap-4">
-      {getMostRecentJobQuery.data?.map((job) => (
+      {getMostRecentJobQuery.data?.jobs?.map((job) => (
         <JobCard job={job} key={job.id} />
       ))}
       <span ref={intersectionRef}>
