@@ -1,7 +1,11 @@
 import { prisma } from "src/server/db";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedEmployerProcedure, protectedJobseekerProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  protectedEmployerProcedure,
+  protectedJobseekerProcedure,
+} from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { EmploymentType, JobStatus } from "@prisma/client";
 
@@ -167,27 +171,37 @@ export const jobRouter = createTRPCRouter({
       return updatedJob;
     }),
 
-  getMostRecentJobs: protectedJobseekerProcedure.query(async () => {
-    const jobs = await prisma.job.findMany({
-      take: 10,
-      orderBy: {
-        createdAt: "desc",
-      },
-      include: {
-        company: {
-          select: {
-            name: true,
-          }
-        },
-        location: {
-          select: {
-            line1: true,
-            borough: true,
-          }
-        },
-      }
-    });
+  getMostRecentJobs: protectedJobseekerProcedure
+    .input(
+      z.object({
+        cursor: z.number().optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      if (!input.cursor) input.cursor = 2;
+      const POST_PER_PAGE = 2;
+      const take = input.cursor * POST_PER_PAGE;
 
-    return jobs;
-  }),
+      const jobs = await prisma.job.findMany({
+        take,
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          company: {
+            select: {
+              name: true,
+            },
+          },
+          location: {
+            select: {
+              line1: true,
+              borough: true,
+            },
+          },
+        },
+      });
+
+      return jobs;
+    }),
 });
