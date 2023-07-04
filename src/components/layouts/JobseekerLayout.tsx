@@ -39,7 +39,7 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
             </label>
             <ul
               tabIndex={0}
-              className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
+              className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow z-[1000]"
             >
               <li>
                 <Link href={"/jobseeker/profile"} className="justify-between">

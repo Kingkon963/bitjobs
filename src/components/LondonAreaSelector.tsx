@@ -14,6 +14,7 @@ function classNames(...classes: string[]) {
 interface LondonAreaSelectorProps {
   onSelect: (area: LondonAddress) => void;
   defaultArea?: Address | null | undefined;
+  hideLabel?: boolean;
 }
 
 function LondonAreaSelector(props: LondonAreaSelectorProps) {
@@ -55,10 +56,12 @@ function LondonAreaSelector(props: LondonAreaSelectorProps) {
         props.onSelect(area);
       }}
     >
-      <Combobox.Label className="block text-sm font-medium text-gray-700">
-        Select Area
-      </Combobox.Label>
-      <div className="relative mt-1">
+      {!props.hideLabel && (
+        <Combobox.Label className="block text-sm font-medium text-gray-700 mb-1">
+          Select Area
+        </Combobox.Label>
+      )}
+      <div className="relative">
         <Combobox.Input
           className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
           onChange={(event) => {
@@ -79,7 +82,7 @@ function LondonAreaSelector(props: LondonAreaSelectorProps) {
           <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
         </Combobox.Button>
         {getLondonAddressesQuery.isSuccess && (
-          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <Combobox.Options className="absolute z-[100000] mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {getLondonAddressesQuery.data.map((area) => (
               <Combobox.Option
                 key={genKey()}
