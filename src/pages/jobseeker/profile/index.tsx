@@ -1,4 +1,5 @@
 import PersonalInfo from "@components/jobseeker/profile/PersonalInfo";
+import UploadCV from "@components/jobseeker/profile/UploadCV";
 import JobseekerLayout from "@components/layouts/JobseekerLayout";
 import { type NextPage } from "next";
 import { RxAvatar } from "react-icons/rx";
@@ -46,7 +47,7 @@ const JobseekerProfilePage: NextPage = () => {
                 Upload CV/Resume
               </label>
               <div className="collapse-content">
-                <p>hello</p>
+                <UploadCV />
               </div>
             </div>
           </div>

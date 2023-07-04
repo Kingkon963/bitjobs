@@ -24,5 +24,9 @@ const config = {
   images: {
     domains: ["api.lorem.space", "lh3.googleusercontent.com"],
   },
+
+  experimental: {
+    esmExternals: false,
+  }
 };
 export default config;
