@@ -3,15 +3,20 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 function WorkExperienceCard() {
+  const handleDelete = () => {
+    const confirm = window.confirm("Are you sure you want to delete this?");
+    if (confirm) {
+      console.log("Delete");
+    }
+  }
   return (
-    <div className="card relative bg-base-100 p-4">
+    <div className="card relative bg-base-100 p-4 hover:cursor-grab">
       <h1 className="text-xl">Junior Frontend Engineer</h1>
       <h2>@ Company Name</h2>
       <h3 className="text-sm text-gray-500">
@@ -27,22 +32,22 @@ function WorkExperienceCard() {
         I&apos;ve used React and TailwindCSS. I&apos;ve also used Storybook to
         build UI components.
       </p>
-      <div className="absolute right-5 top-5">
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <BsThreeDotsVertical />
-          </DropdownMenuTrigger>
+          <div className="absolute right-5 top-5">
+            <DropdownMenuTrigger>
+              <BsThreeDotsVertical />
+            </DropdownMenuTrigger>
+          </div>
           <DropdownMenuContent className="flex flex-col gap-1 py-2">
             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-            <DropdownMenuItem className="hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300 text-md">
+            <DropdownMenuItem className="text-md hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300">
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-error hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300 text-md">
+            <DropdownMenuItem className="text-md text-error hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300" onClick={handleDelete}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
     </div>
   );
 }
@@ -55,7 +60,7 @@ function WorkExperienceList() {
         <WorkExperienceCard />
         <WorkExperienceCard />
       </div>
-      <div className="flex justify-end mt-8">
+      <div className="mt-8 flex justify-end">
         <button className="btn-primary btn">Add New</button>
       </div>
     </div>
