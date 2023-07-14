@@ -9,8 +9,8 @@ module.exports = {
   },
   daisyui: {
     themes: [
-      "corporate",
       "light",
+      "corporate",
       // "business",
       {
         mytheme: {

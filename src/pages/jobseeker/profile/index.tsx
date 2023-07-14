@@ -1,5 +1,6 @@
 import PersonalInfo from "@components/jobseeker/profile/PersonalInfo";
 import UploadCV from "@components/jobseeker/profile/UploadCV";
+import WorkExperienceList from "@components/jobseeker/profile/WorkExperienceList";
 import JobseekerLayout from "@components/layouts/JobseekerLayout";
 import { type NextPage } from "next";
 import { RxAvatar } from "react-icons/rx";
@@ -38,7 +39,7 @@ const JobseekerProfilePage: NextPage = () => {
                 Work Experience
               </label>
               <div className="collapse-content">
-                <p>hello</p>
+                <WorkExperienceList />
               </div>
             </div>
             <div className="collapse bg-base-200">
