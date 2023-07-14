@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 
 function WorkExperienceCard() {
   const handleDelete = () => {
@@ -14,9 +15,9 @@ function WorkExperienceCard() {
     if (confirm) {
       console.log("Delete");
     }
-  }
+  };
   return (
-    <div className="card relative bg-base-100 p-4 hover:cursor-grab">
+    <div className="card relative bg-base-100 p-4">
       <h1 className="text-xl">Junior Frontend Engineer</h1>
       <h2>@ Company Name</h2>
       <h3 className="text-sm text-gray-500">
@@ -32,22 +33,31 @@ function WorkExperienceCard() {
         I&apos;ve used React and TailwindCSS. I&apos;ve also used Storybook to
         build UI components.
       </p>
-        <DropdownMenu>
-          <div className="absolute right-5 top-5">
-            <DropdownMenuTrigger>
-              <BsThreeDotsVertical />
-            </DropdownMenuTrigger>
-          </div>
-          <DropdownMenuContent className="flex flex-col gap-1 py-2">
-            {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-            <DropdownMenuItem className="text-md hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300">
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-md text-error hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300" onClick={handleDelete}>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <DropdownMenu>
+        <div className="absolute right-5 top-5 flex gap-1">
+          <button>
+            <AiOutlineArrowDown />
+          </button>
+          <button>
+            <AiOutlineArrowUp />
+          </button>
+          <DropdownMenuTrigger>
+            <BsThreeDotsVertical />
+          </DropdownMenuTrigger>
+        </div>
+        <DropdownMenuContent className="flex flex-col gap-1 py-2">
+          {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+          <DropdownMenuItem className="text-md hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300">
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="text-md text-error hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300"
+            onClick={handleDelete}
+          >
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
