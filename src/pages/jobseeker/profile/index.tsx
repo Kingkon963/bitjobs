@@ -4,9 +4,18 @@ import WorkExperienceList from "@components/jobseeker/profile/WorkExperienceList
 import JobseekerLayout from "@components/layouts/JobseekerLayout";
 import { type NextPage } from "next";
 import { RxAvatar } from "react-icons/rx";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const JobseekerProfilePage: NextPage = () => {
   return (
+    <>
     <JobseekerLayout>
       <div className="flex gap-2">
         {/* Left panel */}
@@ -18,6 +27,18 @@ const JobseekerProfilePage: NextPage = () => {
               </div>
             </div>
             <h3 className="text-xl">Name</h3>
+            <Dialog>
+  <DialogTrigger>Open</DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+      <DialogDescription>
+        This action cannot be undone. This will permanently delete your account
+        and remove your data from our servers.
+      </DialogDescription>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
           </div>
         </div>
 
@@ -56,6 +77,7 @@ const JobseekerProfilePage: NextPage = () => {
         {/* <div className="max-w-xs flex-1 border p-2">c</div> */}
       </div>
     </JobseekerLayout>
+    </>
   );
 };
 
