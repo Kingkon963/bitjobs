@@ -6,10 +6,17 @@ function PersonalInfo() {
   return (
     <div>
       <div className="grid grid-cols-2">
-        <InputWrapper topLeft="What is your name?">
+        <InputWrapper topLeft="What is your first name?">
           <input
             type="text"
-            placeholder="Your name"
+            placeholder="Your first name"
+            className="input-bordered input w-full max-w-xs"
+          />
+        </InputWrapper>
+        <InputWrapper topLeft="What is your last name?">
+          <input
+            type="text"
+            placeholder="Your last name"
             className="input-bordered input w-full max-w-xs"
           />
         </InputWrapper>

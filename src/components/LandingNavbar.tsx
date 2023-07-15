@@ -1,5 +1,4 @@
 import React from "react";
-import ThemeSwitch from "@components/ThemeSwitch";
 import AvatarMenu from "@components/AvatarMenu";
 import { UserRole } from "@prisma/client";
 import { signIn, useSession } from "next-auth/react";
@@ -26,7 +25,6 @@ function LandingNavbar() {
               className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-focus focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-focus"
               >Employer Dashboard</Link>
             )}
-            <ThemeSwitch />
             {!session && !isHiringPage && (
               <>
                 <button
