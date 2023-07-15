@@ -19,6 +19,8 @@ import {
 
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
+import EditWorkExperienceDialog from "./EditWorkExperienceDialog";
+import { DialogTrigger } from "@/components/ui/dialog";
 
 function WorkExperienceCard() {
   const handleDelete = () => {
@@ -81,7 +83,9 @@ function WorkExperienceCard() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-error hover:bg-error">Delete</AlertDialogAction>
+            <AlertDialogAction className="bg-error hover:bg-error">
+              Delete
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -98,7 +102,9 @@ function WorkExperienceList() {
         <WorkExperienceCard />
       </div>
       <div className="mt-8 flex justify-end">
-        <button className="btn-primary btn">Add New</button>
+        <EditWorkExperienceDialog>
+          <DialogTrigger className="btn-primary btn">Add New</DialogTrigger>
+        </EditWorkExperienceDialog>
       </div>
     </div>
   );

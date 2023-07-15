@@ -9,9 +9,9 @@ const JobseekerProfilePage: NextPage = () => {
   return (
     <>
       <JobseekerLayout>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-24">
           {/* Left panel */}
-          <div className="max-w-xs flex-1 border p-2">
+          <div className="max-w-xs flex-1 border p-2 sticky top-10 ">
             <div className="flex flex-col items-center justify-center">
               <div className="avatar">
                 <div className="w-24 rounded-full">
@@ -52,10 +52,10 @@ const JobseekerProfilePage: NextPage = () => {
                   htmlFor="profile-info-accordion-2"
                   className="collapse-title text-xl font-medium"
                 >
-                  Work Experience
+                  Education
                 </label>
                 <div className="collapse-content">
-                  <WorkExperienceList />
+                  Education
                 </div>
               </div>
               <div className="collapse bg-base-200">
@@ -66,6 +66,22 @@ const JobseekerProfilePage: NextPage = () => {
                 />
                 <label
                   htmlFor="profile-info-accordion-3"
+                  className="collapse-title text-xl font-medium"
+                >
+                  Work Experience
+                </label>
+                <div className="collapse-content">
+                  <WorkExperienceList />
+                </div>
+              </div>
+              <div className="collapse bg-base-200">
+                <input
+                  type="radio"
+                  name="profile-info-accordion"
+                  id="profile-info-accordion-4"
+                />
+                <label
+                  htmlFor="profile-info-accordion-4"
                   className="collapse-title text-xl font-medium"
                 >
                   Upload CV/Resume
