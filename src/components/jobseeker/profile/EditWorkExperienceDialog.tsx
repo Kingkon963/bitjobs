@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -109,6 +110,29 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                       />
                     </FormControl>
                     <FormDescription>Enter your job title</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Job Description{" "}
+                      <span className="text-xs text-gray-500">(optional)</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell us a little bit about your job"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    {/* <FormDescription>
+                      Describe about your task in this job
+                    </FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -216,7 +240,10 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                         className="flex flex-col space-y-1"
                       >
                         {Object.values(EmploymentType).map((type) => (
-                          <FormItem className="flex items-center space-x-3 space-y-0" key={type}>
+                          <FormItem
+                            className="flex items-center space-x-3 space-y-0"
+                            key={type}
+                          >
                             <FormControl>
                               <RadioGroupItem value={type} />
                             </FormControl>

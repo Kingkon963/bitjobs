@@ -82,7 +82,7 @@ function WorkExperienceCard() {
       <div>
         <div className="divider my-1"></div>
         <span className="badge badge-neutral">React.js</span>
-        <div className="divider my-1"></div>
+        {/* <div className="divider my-1"></div> */}
       </div>
       <p className="mt-2">
         I was responsible for building UI elements & write testing. There
