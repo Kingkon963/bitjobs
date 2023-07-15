@@ -109,7 +109,7 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>Enter your job title</FormDescription>
+                    {/* <FormDescription>Enter your job title</FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -125,14 +125,11 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Tell us a little bit about your job"
+                        placeholder="Tell us a little bit about your role in this job"
                         className="resize-none"
                         {...field}
                       />
                     </FormControl>
-                    {/* <FormDescription>
-                      Describe about your task in this job
-                    </FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -144,9 +141,8 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                   <FormItem>
                     <FormLabel>Company Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="" {...field} />
+                      <Input placeholder="e.g. 'BitJobs'" {...field} />
                     </FormControl>
-                    <FormDescription>Enter your company name</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -164,9 +160,8 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                         </span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="" {...field} />
+                        <Input placeholder="e.g. 'London'" {...field} />
                       </FormControl>
-                      <FormDescription>Enter your job city.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -183,9 +178,8 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                         </span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="" {...field} />
+                        <Input placeholder="e.g. 'UK'" {...field} />
                       </FormControl>
-                      <FormDescription>Country of the company</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -201,9 +195,8 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                       <span className="text-xs text-gray-500">(optional)</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="" {...field} />
+                      <Input placeholder="https://" {...field} />
                     </FormControl>
-                    <FormDescription>Website of the company</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -218,11 +211,9 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                       <span className="text-xs text-gray-500">(optional)</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="" {...field} />
+                      <Input placeholder="https://" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      LinkedIn Profile of the company
-                    </FormDescription>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -254,9 +245,7 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                         ))}
                       </RadioGroup>
                     </FormControl>
-                    {/* <FormDescription>
-                      LinkedIn Profile of the company
-                    </FormDescription> */}
+
                     <FormMessage />
                   </FormItem>
                 )}
