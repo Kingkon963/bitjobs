@@ -21,34 +21,47 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns"
-import { cn } from "@/lib/utils"
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmploymentType } from "@prisma/client";
-import {SlCalender} from "react-icons/sl";
+import { SlCalender } from "react-icons/sl";
+import { BsChevronBarContract, BsChevronBarExpand } from "react-icons/bs";
 
 const formSchema = z.object({
   title: z
-    .string()
+    .string({
+      required_error: "Title is required",
+    })
     .min(4, {
       message: "Title must be at least 4 characters long",
     })
     .max(50),
-  company: z.string().min(2),
+  company: z.string({
+    required_error: "Company name is required",
+  }).min(2),
   city: z.string().optional(),
   country: z.string().optional(),
-  companyWebsite: z.string().url().optional(),
-  companyLinkedIn: z.string().url().optional(),
+  companyWebsite: z.string().optional(),
+  companyLinkedIn: z.string().optional(),
   employmentType: z.nativeEnum(EmploymentType),
   description: z.string().optional(),
-  startDate: z.date(),
+  startDate: z.date({
+    required_error: "Start date is required",
+  }),
   endDate: z.date().optional(),
 });
 
@@ -73,6 +86,7 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
       endDate: new Date(),
     },
   });
+  const [showCompanyFields, setShowCompanyFields] = React.useState(false);
 
   useEffect(() => {
     React.Children.forEach(children, (child) => {
@@ -94,7 +108,7 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
   return (
     <Dialog>
       {children}
-      <DialogContent className="my-24">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Work Experience</DialogTitle>
           <DialogDescription>
@@ -144,90 +158,116 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="company"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Company Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. 'BitJobs'" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="grid grid-cols-2 space-x-4">
-                <FormField
-                  control={form.control}
-                  name="city"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        City{" "}
-                        <span className="text-xs text-gray-500">
-                          (optional)
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g. 'London'" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="country"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Country{" "}
-                        <span className="text-xs text-gray-500">
-                          (optional)
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g. 'UK'" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <FormField
-                control={form.control}
-                name="companyWebsite"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Company Website{" "}
-                      <span className="text-xs text-gray-500">(optional)</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="companyLinkedIn"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Company LinkedIn Profile{" "}
-                      <span className="text-xs text-gray-500">(optional)</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://" {...field} />
-                    </FormControl>
+              <Collapsible
+                open={showCompanyFields}
+                onOpenChange={setShowCompanyFields}
+              >
+                <CollapsibleTrigger>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium">
+                      Company Details
+                    </span>
+                    <Button variant="ghost" size="sm" className="w-9 p-0">
+                      {showCompanyFields ? (
+                        <BsChevronBarContract/>
+                        ) : (
+                        <BsChevronBarExpand />
+                      )}
+                      <span className="sr-only">Toggle</span>
+                    </Button>
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <FormField
+                    control={form.control}
+                    name="company"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g. 'BitJobs'" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="grid grid-cols-2 space-x-4">
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            City{" "}
+                            <span className="text-xs text-gray-500">
+                              (optional)
+                            </span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input placeholder="e.g. 'London'" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="country"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            Country{" "}
+                            <span className="text-xs text-gray-500">
+                              (optional)
+                            </span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input placeholder="e.g. 'UK'" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="companyWebsite"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Company Website{" "}
+                          <span className="text-xs text-gray-500">
+                            (optional)
+                          </span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="companyLinkedIn"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Company LinkedIn Profile{" "}
+                          <span className="text-xs text-gray-500">
+                            (optional)
+                          </span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://" {...field} />
+                        </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CollapsibleContent>
+              </Collapsible>
               <FormField
                 control={form.control}
                 name="employmentType"
@@ -242,7 +282,7 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                       >
                         {Object.values(EmploymentType).map((type) => (
                           <FormItem
-                            className="flex items-center space-x-3 space-y-0 border-r last:border-r-0 border-black pr-4 last:pr-0"
+                            className="flex items-center space-x-3 space-y-0 border-r border-black pr-4 last:border-r-0 last:pr-0"
                             key={type}
                           >
                             <FormControl>
@@ -291,11 +331,9 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                           captionLayout="dropdown"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date: Date) =>
-                            date > new Date()
-                          }
+                          disabled={(date: Date) => date > new Date()}
                           initialFocus
-                          fromYear={1990} 
+                          fromYear={1990}
                           toYear={new Date().getFullYear()}
                         />
                       </PopoverContent>
@@ -335,11 +373,9 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                           captionLayout="dropdown"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date: Date) =>
-                            date > new Date()
-                          }
+                          disabled={(date: Date) => date > new Date()}
                           initialFocus
-                          fromYear={1990} 
+                          fromYear={1990}
                           toYear={new Date().getFullYear()}
                         />
                       </PopoverContent>
