@@ -238,11 +238,11 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                       <RadioGroup
                         onValueChange={field.onChange}
                         defaultValue={field.value}
-                        className="flex flex-col space-y-1"
+                        className="flex flex-wrap gap-4"
                       >
                         {Object.values(EmploymentType).map((type) => (
                           <FormItem
-                            className="flex items-center space-x-3 space-y-0"
+                            className="flex items-center space-x-3 space-y-0 border-r last:border-r-0 border-black pr-4 last:pr-0"
                             key={type}
                           >
                             <FormControl>
