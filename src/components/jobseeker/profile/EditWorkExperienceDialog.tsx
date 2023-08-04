@@ -190,17 +190,17 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                         <span className="text-sm font-medium">
                           Company Details
                         </span>
-                        <Button variant="ghost" size="sm" className="w-9 p-0">
+                        <span className="w-9 p-0">
                           {showCompanyFields ? (
                             <BsChevronBarContract />
                           ) : (
                             <BsChevronBarExpand />
                           )}
                           <span className="sr-only">Toggle</span>
-                        </Button>
+                        </span>
                       </div>
                     </CollapsibleTrigger>
-                    <CollapsibleContent>
+                    <CollapsibleContent className="mt-4">
                       <FormField
                         control={form.control}
                         name="company"
