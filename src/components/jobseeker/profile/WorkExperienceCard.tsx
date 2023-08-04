@@ -30,6 +30,7 @@ import {
   AiOutlineArrowDown,
   AiOutlineLinkedin,
 } from "react-icons/ai";
+import DisplayTags from "@components/common/DisplayTags";
 
 function WorkExperienceCard() {
   const handleDelete = () => {
@@ -46,7 +47,7 @@ function WorkExperienceCard() {
         <span>•</span>
         <span>Full Time</span>
         <span>•</span>
-        <span className="flex justify-center items-center">
+        <span className="flex items-center justify-center">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger tabIndex={-1}>
@@ -60,7 +61,7 @@ function WorkExperienceCard() {
             </Tooltip>
           </TooltipProvider>
         </span>
-        <span className="flex justify-center items-center">
+        <span className="flex items-center justify-center">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger tabIndex={-1}>
@@ -79,11 +80,8 @@ function WorkExperienceCard() {
       <h3 className="text-sm text-gray-500">
         Mar 2019 - May 2020 (1 year & 1 month)
       </h3>
-      <div>
-        <div className="divider my-1"></div>
-        <span className="badge badge-neutral">React.js</span>
-        {/* <div className="divider my-1"></div> */}
-      </div>
+      <div className="divider my-1"></div>
+      <DisplayTags tags={["React.Js"]}/>
       <p className="mt-2">
         I was responsible for building UI elements & write testing. There
         I&apos;ve used React and TailwindCSS. I&apos;ve also used Storybook to
