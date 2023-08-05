@@ -79,6 +79,7 @@ function WorkExperienceCard({ workExperience }: WorkExperienceCardProps) {
     setCurrentWorkExperienceId(workExperience.id);
     setWorkExperienceData({
       title: workExperience.title || "",
+      description: workExperience.description || "",
       company: workExperience.company || "",
       companyWebsite: workExperience.companyWebsite || "",
       companyLinkedIn: workExperience.companyLinkedIn || "",
