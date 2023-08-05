@@ -32,76 +32,118 @@ import {
 } from "react-icons/ai";
 import DisplayTags from "@components/common/DisplayTags";
 import { type WorkExperience } from "@prisma/client";
-
+import { api } from "@utils/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { format, formatDistance } from "date-fns";
 
 interface WorkExperienceCardProps {
   workExperience: WorkExperience;
 }
 
-function WorkExperienceCard() {
+function WorkExperienceCard({ workExperience }: WorkExperienceCardProps) {
+  const deleteMutation =
+    api.jobSeekerProfile.deleteWorkExperience.useMutation();
+  const queryClient = useQueryClient();
+
   const handleDelete = () => {
-    // const confirm = window.confirm("Are you sure you want to delete this?");
-    // if (confirm) {
-    //   console.log("Delete");
-    // }
+    deleteMutation
+      .mutateAsync(
+        {
+          id: workExperience.id,
+        },
+        {
+          onSuccess: () => {
+            queryClient
+              .invalidateQueries([
+                ["jobSeekerProfile", "getJobseekerProfile"],
+                {
+                  type: "query",
+                },
+              ])
+              .catch(() => {
+                console.log("Failed to invalidate job seeker profile query");
+              });
+          },
+        }
+      )
+      .catch(() => {
+        console.log("Failed to delete work experience");
+      });
   };
+
   return (
     <div className="card relative bg-base-100 p-4">
-      <h1 className="text-xl">Junior Frontend Engineer</h1>
+      <h1 className="text-xl">{workExperience.title}</h1>
       <h2 className="flex items-center gap-2">
-        <span>@ Company Name</span>
+        <span>@ {workExperience.company}</span>
         <span>•</span>
-        <span>Full Time</span>
+        <span>{workExperience.employmentType}</span>
         <span>•</span>
-        <span className="flex items-center justify-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger tabIndex={-1}>
-                <Link href="https://www.google.com" target="_blank">
-                  <BsGlobe2 className="text-sm" />
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Website</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </span>
-        <span className="flex items-center justify-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger tabIndex={-1}>
-                <Link href="https://www.google.com" target="_blank">
-                  <AiOutlineLinkedin className="text-lg" />
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>LinkedIn</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </span>
+        {workExperience.companyWebsite && (
+          <span className="flex items-center justify-center">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger tabIndex={-1}>
+                  <Link href={workExperience.companyWebsite} target="_blank">
+                    <BsGlobe2 className="text-sm" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Website</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </span>
+        )}
+        {workExperience.companyLinkedIn && (
+          <span className="flex items-center justify-center">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger tabIndex={-1}>
+                  <Link href={workExperience.companyLinkedIn} target="_blank">
+                    <AiOutlineLinkedin className="text-lg" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>LinkedIn</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </span>
+        )}
       </h2>
-      <h3 className="text-sm text-gray-500">📍 Dhaka, Bangladesh</h3>
+      {workExperience.city || workExperience.country ? (
+        <h3 className="text-sm text-gray-500">
+          📍 {workExperience.city}
+          {workExperience.city && workExperience.country ? ", " : null}
+          {workExperience.country}
+        </h3>
+      ) : null}
       <h3 className="text-sm text-gray-500">
-        Mar 2019 - May 2020 (1 year & 1 month)
+        {format(workExperience.startDate, "PPP")} -{" "}
+        {workExperience.endDate
+          ? format(workExperience.endDate, "PPP")
+          : "Present"}
+        {workExperience.endDate && (
+          <span className="text-gray-400">
+            {" "}
+            ({formatDistance(workExperience.startDate, workExperience.endDate)})
+          </span>
+        )}
       </h3>
-      <div className="divider my-1"></div>
-      <DisplayTags tags={["React.Js"]}/>
-      <p className="mt-2">
-        I was responsible for building UI elements & write testing. There
-        I&apos;ve used React and TailwindCSS. I&apos;ve also used Storybook to
-        build UI components.
-      </p>
+
+      {workExperience.skills.length > 0 || workExperience.description ? (
+        <div className="divider my-1"></div>
+      ) : null}
+      
+      <DisplayTags tags={workExperience.skills} />
+      {workExperience.description && (
+        <p className="mt-2">{workExperience.description}</p>
+      )}
+
       <AlertDialog>
         <DropdownMenu>
           <div className="absolute right-5 top-5 flex gap-1">
-            <button>
-              <AiOutlineArrowDown />
-            </button>
-            <button>
-              <AiOutlineArrowUp />
-            </button>
             <DropdownMenuTrigger>
               <BsThreeDotsVertical />
             </DropdownMenuTrigger>
@@ -130,7 +172,10 @@ function WorkExperienceCard() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-error hover:bg-error">
+            <AlertDialogAction
+              className="bg-error hover:bg-error"
+              onClick={handleDelete}
+            >
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

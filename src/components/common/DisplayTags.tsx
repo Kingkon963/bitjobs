@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 
 interface DisplayTagsProps {
@@ -14,7 +15,7 @@ function DisplayTags({ tags, onClickOnTag }: DisplayTagsProps) {
             return null;
           return (
             <span
-              className="badge badge-neutral cursor-pointer"
+              className={cn("badge badge-neutral", onClickOnTag && "cursor-pointer")}
               key={index}
               onClick={() => {
                 if (onClickOnTag) onClickOnTag(index);

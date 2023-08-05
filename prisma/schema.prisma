@@ -181,14 +181,15 @@ model WorkExperience {
     id              String           @id @default(cuid())
     title           String
     company         String
-    city            String
-    country         String
+    city            String?
+    country         String?
     companyWebsite  String?
     companyLinkedIn String?
     employmentType  EmploymentType   @default(FullTime)
     startDate       DateTime
     endDate         DateTime?
     description     String?
+    skills          String[]
     profile         JobseekerProfile @relation(fields: [profileId], references: [id])
     profileId       String
     createdAt       DateTime         @default(now())

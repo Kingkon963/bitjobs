@@ -41,6 +41,9 @@ import { EmploymentType } from "@prisma/client";
 import { SlCalender } from "react-icons/sl";
 import { BsChevronBarContract, BsChevronBarExpand } from "react-icons/bs";
 import SkillsTagManager from "./SkillsTagManager";
+import { api } from "@utils/api";
+import { useQueryClient } from "@tanstack/react-query";
+import addHTTPS from "@utils/addHTTPS";
 
 const formSchema = z.object({
   title: z
@@ -92,6 +95,12 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
   });
   const [showCompanyFields, setShowCompanyFields] = React.useState(false);
   const [show2ndStep, setShow2ndStep] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  const getProfileQuery = api.jobSeekerProfile.getJobseekerProfile.useQuery();
+  const saveWorkExprienceMutation =
+    api.jobSeekerProfile.saveWorkExperience.useMutation();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     React.Children.forEach(children, (child) => {
@@ -113,8 +122,43 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
     }
   }, [form.formState.errors.company]);
 
+  const closeDialog = () => {
+    form.reset();
+    setShowCompanyFields(false);
+    setShow2ndStep(false);
+    setOpen(false);
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    if (!getProfileQuery.data?.id) return;
+    
+    // preproccess urls
+    if (values.companyWebsite) {
+      values.companyWebsite = addHTTPS(values.companyWebsite);
+    }
+    if (values.companyLinkedIn) {
+      values.companyLinkedIn = addHTTPS(values.companyLinkedIn);
+    }
+
+    saveWorkExprienceMutation.mutate({
+      profileId: getProfileQuery.data?.id,
+      data: values,
+    },
+      {
+        onSuccess: () => {
+          queryClient
+            .invalidateQueries([
+              ["jobSeekerProfile", "getJobseekerProfile"],
+              {
+                type: "query",
+              },
+            ])
+            .catch(() => {
+              console.log("Failed to invalidate job seeker profile query");
+            });
+          closeDialog();
+        },
+      });
   };
 
   const goTo2ndStep = async () => {
@@ -123,9 +167,8 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
     setShow2ndStep(true);
   };
 
-
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       {children}
       <DialogContent>
         <DialogHeader>
@@ -412,9 +455,11 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
 
               {show2ndStep && (
                 <>
-                  <SkillsTagManager onChange={skills => {
-                    form.setValue("skills", skills);
-                  }}/>
+                  <SkillsTagManager
+                    onChange={(skills) => {
+                      form.setValue("skills", skills);
+                    }}
+                  />
                 </>
               )}
 
@@ -428,7 +473,11 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                     >
                       Back
                     </button>
-                    <button type="submit" className="btn-primary btn">
+                    <button
+                      type="submit"
+                      className="btn-primary btn"
+                      disabled={saveWorkExprienceMutation.isLoading}
+                    >
                       Save
                     </button>
                   </>

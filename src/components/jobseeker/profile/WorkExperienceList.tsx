@@ -38,10 +38,17 @@ function WorkExperienceList() {
               <EmptyState title="Found nothing here" hideBtn={true} />
             </>
           )}
-
-        {/* <WorkExperienceCard />
-        <WorkExperienceCard />
-        <WorkExperienceCard /> */}
+        {getProfileQuery.isSuccess && getProfileQuery.data && 
+          Array.isArray(getProfileQuery.data?.workExperience) &&
+          getProfileQuery?.data?.workExperience.length > 0 && getProfileQuery?.data?.workExperience.map((experience) => {
+            return (
+              <WorkExperienceCard
+                key={experience.id}
+                workExperience={experience}
+              />
+            );
+          })
+        }
       </div>
     </div>
   );
