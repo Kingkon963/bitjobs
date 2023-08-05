@@ -1,17 +1,20 @@
+import EditWorkExperienceDialog from "@components/jobseeker/profile/EditWorkExperienceDialog";
 import PersonalInfo from "@components/jobseeker/profile/PersonalInfo";
 import UploadCV from "@components/jobseeker/profile/UploadCV";
 import WorkExperienceList from "@components/jobseeker/profile/WorkExperienceList";
 import JobseekerLayout from "@components/layouts/JobseekerLayout";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 import { type NextPage } from "next";
+import { BsPlusCircle } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
 
 const JobseekerProfilePage: NextPage = () => {
   return (
     <>
       <JobseekerLayout>
-        <div className="flex gap-2 mb-24">
+        <div className="mb-24 flex gap-2">
           {/* Left panel */}
-          <div className="max-w-xs flex-1 border p-2 sticky top-10 ">
+          <div className="sticky top-10 max-w-xs flex-1 border p-2 ">
             <div className="flex flex-col items-center justify-center">
               <div className="avatar">
                 <div className="w-24 rounded-full">
@@ -54,9 +57,7 @@ const JobseekerProfilePage: NextPage = () => {
                 >
                   Education
                 </label>
-                <div className="collapse-content">
-                  Education
-                </div>
+                <div className="collapse-content">Education</div>
               </div>
               <div className="collapse bg-base-200">
                 <input
@@ -66,9 +67,14 @@ const JobseekerProfilePage: NextPage = () => {
                 />
                 <label
                   htmlFor="profile-info-accordion-3"
-                  className="collapse-title text-xl font-medium"
+                  className="collapse-title text-xl font-medium flex items-center"
                 >
-                  Work Experience
+                  <span className="flex-1">Work Experience</span>
+                  <EditWorkExperienceDialog>
+                    <DialogTrigger className="btn-ghost btn">
+                      <BsPlusCircle className="inline-block ml-0 w-5 h-5" /> Add
+                    </DialogTrigger>
+                  </EditWorkExperienceDialog>
                 </label>
                 <div className="collapse-content">
                   <WorkExperienceList />

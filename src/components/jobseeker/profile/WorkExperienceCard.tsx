@@ -31,6 +31,12 @@ import {
   AiOutlineLinkedin,
 } from "react-icons/ai";
 import DisplayTags from "@components/common/DisplayTags";
+import { type WorkExperience } from "@prisma/client";
+
+
+interface WorkExperienceCardProps {
+  workExperience: WorkExperience;
+}
 
 function WorkExperienceCard() {
   const handleDelete = () => {

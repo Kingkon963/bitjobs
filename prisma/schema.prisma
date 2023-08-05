@@ -145,21 +145,21 @@ model Job {
 }
 
 model JobseekerProfile {
-    id         String           @id @default(cuid())
-    user       User             @relation(fields: [userId], references: [id])
-    userId     String           @unique
-    createdAt  DateTime         @default(now())
-    updatedAt  DateTime         @updatedAt
-    firstName  String
-    lastName   String
-    address    Address?         @relation(fields: [addressId], references: [id])
-    phone      String?
-    website    String?
-    bio        String?
-    skills     String[]
-    education  Education[]
-    experience WorkExperience[]
-    addressId  String?
+    id             String           @id @default(cuid())
+    user           User             @relation(fields: [userId], references: [id])
+    userId         String           @unique
+    createdAt      DateTime         @default(now())
+    updatedAt      DateTime         @updatedAt
+    firstName      String
+    lastName       String
+    address        Address?         @relation(fields: [addressId], references: [id])
+    phone          String?
+    website        String?
+    bio            String?
+    skills         String[]
+    education      Education[]
+    workExperience WorkExperience[]
+    addressId      String?
 }
 
 model Education {
