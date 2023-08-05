@@ -35,6 +35,7 @@ import { type WorkExperience } from "@prisma/client";
 import { api } from "@utils/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { format, formatDistance } from "date-fns";
+import useWorkExperience from "~/hooks/stores/useWorkExperience";
 
 interface WorkExperienceCardProps {
   workExperience: WorkExperience;
@@ -44,6 +45,9 @@ function WorkExperienceCard({ workExperience }: WorkExperienceCardProps) {
   const deleteMutation =
     api.jobSeekerProfile.deleteWorkExperience.useMutation();
   const queryClient = useQueryClient();
+  const setOpenWeDialog = useWorkExperience((store) => store.setOpenDialog);
+  const setWorkExperienceData = useWorkExperience((store) => store.setData);
+  const setCurrentWorkExperienceId = useWorkExperience((store) => store.setCurrentId);
 
   const handleDelete = () => {
     deleteMutation
@@ -69,6 +73,23 @@ function WorkExperienceCard({ workExperience }: WorkExperienceCardProps) {
       .catch(() => {
         console.log("Failed to delete work experience");
       });
+  };
+
+  const handleEdit = () => {
+    setCurrentWorkExperienceId(workExperience.id);
+    setWorkExperienceData({
+      title: workExperience.title || "",
+      company: workExperience.company || "",
+      companyWebsite: workExperience.companyWebsite || "",
+      companyLinkedIn: workExperience.companyLinkedIn || "",
+      city: workExperience.city || "",
+      country: workExperience.country || "",
+      employmentType: workExperience.employmentType || "",
+      startDate: workExperience.startDate || new Date(),
+      endDate: workExperience.endDate || new Date(),
+      skills: workExperience.skills || [],
+    });
+    setOpenWeDialog(true);
   };
 
   return (
@@ -135,7 +156,7 @@ function WorkExperienceCard({ workExperience }: WorkExperienceCardProps) {
       {workExperience.skills.length > 0 || workExperience.description ? (
         <div className="divider my-1"></div>
       ) : null}
-      
+
       <DisplayTags tags={workExperience.skills} />
       {workExperience.description && (
         <p className="mt-2">{workExperience.description}</p>
@@ -150,7 +171,10 @@ function WorkExperienceCard({ workExperience }: WorkExperienceCardProps) {
           </div>
           <DropdownMenuContent className="flex flex-col gap-1 py-2">
             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-            <DropdownMenuItem className="text-md hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300">
+            <DropdownMenuItem
+              className="text-md hover:cursor-pointer hover:bg-base-200 focus:bg-base-200 active:bg-base-300"
+              onClick={handleEdit}
+            >
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem

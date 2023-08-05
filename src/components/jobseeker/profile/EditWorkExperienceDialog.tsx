@@ -44,6 +44,7 @@ import SkillsTagManager from "./SkillsTagManager";
 import { api } from "@utils/api";
 import { useQueryClient } from "@tanstack/react-query";
 import addHTTPS from "@utils/addHTTPS";
+import useWorkExperience from "~/hooks/stores/useWorkExperience";
 
 export const workExpDialogFormSchema = z.object({
   title: z
@@ -95,25 +96,16 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
   });
   const [showCompanyFields, setShowCompanyFields] = React.useState(false);
   const [show2ndStep, setShow2ndStep] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
 
   const getProfileQuery = api.jobSeekerProfile.getJobseekerProfile.useQuery();
   const saveWorkExprienceMutation =
     api.jobSeekerProfile.saveWorkExperience.useMutation();
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    React.Children.forEach(children, (child) => {
-      // console.log(child);
-      if (React.isValidElement(child)) {
-        if (child.type !== DialogTrigger) {
-          throw new Error(
-            "EditWorkExperienceDialog component's children must be DialogTrigger"
-          );
-        }
-      }
-    });
-  }, [children]);
+  const openDialog = useWorkExperience((store) => store.openDialog);
+  const setOpenDialog = useWorkExperience((store) => store.setOpenDialog);
+  const workExperienceData = useWorkExperience((store) => store.data);
+  const setWorkExperienceData = useWorkExperience((store) => store.setData);
+  const currWorkExperienceId = useWorkExperience((store) => store.currId);
 
   //open company fields if there is any error
   useEffect(() => {
@@ -122,16 +114,24 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
     }
   }, [form.formState.errors.company]);
 
+  // set form data if there is any
+  useEffect(() => {
+    if (workExperienceData) {
+      form.reset(workExperienceData);
+    }
+  }, [workExperienceData]);
+
   const closeDialog = () => {
-    form.reset();
+    form.reset(form.formState.defaultValues);
     setShowCompanyFields(false);
     setShow2ndStep(false);
-    setOpen(false);
+    setOpenDialog(false);
+    setWorkExperienceData(undefined);
   };
 
   const onSubmit = (values: z.infer<typeof workExpDialogFormSchema>) => {
     if (!getProfileQuery.data?.id) return;
-    
+
     // preproccess urls
     if (values.companyWebsite) {
       values.companyWebsite = addHTTPS(values.companyWebsite);
@@ -140,10 +140,12 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
       values.companyLinkedIn = addHTTPS(values.companyLinkedIn);
     }
 
-    saveWorkExprienceMutation.mutate({
-      profileId: getProfileQuery.data?.id,
-      data: values,
-    },
+    saveWorkExprienceMutation.mutate(
+      {
+        id: currWorkExperienceId,
+        profileId: getProfileQuery.data?.id,
+        data: values,
+      },
       {
         onSuccess: () => {
           queryClient
@@ -158,7 +160,8 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
             });
           closeDialog();
         },
-      });
+      }
+    );
   };
 
   const goTo2ndStep = async () => {
@@ -168,7 +171,7 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       {children}
       <DialogContent>
         <DialogHeader>
@@ -459,6 +462,7 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
                     onChange={(skills) => {
                       form.setValue("skills", skills);
                     }}
+                    defaultSkills={form.getValues("skills")}
                   />
                 </>
               )}

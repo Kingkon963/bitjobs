@@ -16,7 +16,9 @@ export const jobSeekerProfileRouter = createTRPCRouter({
       include: {
         address: true,
         education: true,
-        workExperience: true,
+        workExperience: {
+          orderBy: { startDate: "desc" },
+        },
       },
     });
 

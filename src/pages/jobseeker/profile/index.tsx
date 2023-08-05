@@ -7,8 +7,17 @@ import { DialogTrigger } from "@radix-ui/react-dialog";
 import { type NextPage } from "next";
 import { BsPlusCircle } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
+import useWorkExperience from "~/hooks/stores/useWorkExperience";
 
 const JobseekerProfilePage: NextPage = () => {
+  const setOpenWeDialog = useWorkExperience((store) => store.setOpenDialog);
+  const resetWorkExperienceData = useWorkExperience((store) => store.reset);
+
+  const openAddWorkExperienceDialog = () => {
+    resetWorkExperienceData();
+    setOpenWeDialog(true);
+  };
+
   return (
     <>
       <JobseekerLayout>
@@ -67,13 +76,16 @@ const JobseekerProfilePage: NextPage = () => {
                 />
                 <label
                   htmlFor="profile-info-accordion-3"
-                  className="collapse-title text-xl font-medium flex items-center"
+                  className="collapse-title flex items-center text-xl font-medium"
                 >
                   <span className="flex-1">Work Experience</span>
                   <EditWorkExperienceDialog>
-                    <DialogTrigger className="btn-ghost btn">
-                      <BsPlusCircle className="inline-block ml-0 w-5 h-5" /> Add
-                    </DialogTrigger>
+                    <button
+                      className="btn-ghost btn"
+                      onClick={openAddWorkExperienceDialog}
+                    >
+                      <BsPlusCircle className="ml-0 inline-block h-5 w-5" /> Add
+                    </button>
                   </EditWorkExperienceDialog>
                 </label>
                 <div className="collapse-content">
