@@ -40,8 +40,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EmploymentType } from "@prisma/client";
 import { SlCalender } from "react-icons/sl";
 import { BsChevronBarContract, BsChevronBarExpand } from "react-icons/bs";
+import SkillsTagManager from "./SkillsTagManager";
+import { api } from "@utils/api";
+import { useQueryClient } from "@tanstack/react-query";
+import addHTTPS from "@utils/addHTTPS";
+import useWorkExperience from "~/hooks/stores/useWorkExperience";
 
-const formSchema = z.object({
+export const workExpDialogFormSchema = z.object({
   title: z
     .string({
       required_error: "Title is required",
@@ -50,9 +55,11 @@ const formSchema = z.object({
       message: "Title must be at least 4 characters long",
     })
     .max(50),
-  company: z.string({
-    required_error: "Company name is required",
-  }).min(2),
+  company: z
+    .string({
+      required_error: "Company name is required",
+    })
+    .min(2),
   city: z.string().optional(),
   country: z.string().optional(),
   companyWebsite: z.string().optional(),
@@ -63,7 +70,21 @@ const formSchema = z.object({
     required_error: "Start date is required",
   }),
   endDate: z.date().optional(),
+  skills: z.array(z.string()).optional(),
 });
+
+const defaultValues: z.infer<typeof workExpDialogFormSchema> = {
+  title: "",
+  company: "",
+  city: "",
+  country: "",
+  companyWebsite: "",
+  companyLinkedIn: "",
+  employmentType: EmploymentType.FullTime,
+  description: "",
+  startDate: new Date(),
+  endDate: new Date(),
+};
 
 type EditWorkExperienceDialogProps = {
   // can pass only DialogTrigger
@@ -71,42 +92,89 @@ type EditWorkExperienceDialogProps = {
 };
 
 function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      company: "",
-      city: "",
-      country: "",
-      companyWebsite: "",
-      companyLinkedIn: "",
-      employmentType: EmploymentType.FullTime,
-      description: "",
-      startDate: new Date(),
-      endDate: new Date(),
-    },
+  const form = useForm<z.infer<typeof workExpDialogFormSchema>>({
+    resolver: zodResolver(workExpDialogFormSchema),
+    defaultValues,
   });
   const [showCompanyFields, setShowCompanyFields] = React.useState(false);
+  const [show2ndStep, setShow2ndStep] = React.useState(false);
 
+  const getProfileQuery = api.jobSeekerProfile.getJobseekerProfile.useQuery();
+  const saveWorkExprienceMutation =
+    api.jobSeekerProfile.saveWorkExperience.useMutation();
+  const queryClient = useQueryClient();
+  const openDialog = useWorkExperience((store) => store.openDialog);
+  const setOpenDialog = useWorkExperience((store) => store.setOpenDialog);
+  const workExperienceData = useWorkExperience((store) => store.data);
+  const setWorkExperienceData = useWorkExperience((store) => store.setData);
+  const currWorkExperienceId = useWorkExperience((store) => store.currId);
+
+  //open company fields if there is any error
   useEffect(() => {
-    React.Children.forEach(children, (child) => {
-      // console.log(child);
-      if (React.isValidElement(child)) {
-        if (child.type !== DialogTrigger) {
-          throw new Error(
-            "EditWorkExperienceDialog component's children must be DialogTrigger"
-          );
-        }
-      }
-    });
-  }, [children]);
+    if (form.formState.errors.company) {
+      setShowCompanyFields(true);
+    }
+  }, [form.formState.errors.company]);
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  // set form data if there is any
+  useEffect(() => {
+    form.reset(defaultValues);
+    if (workExperienceData) {
+      form.reset(workExperienceData);
+    }
+  }, [form, workExperienceData]);
+
+  const closeDialog = () => {
+    form.reset(defaultValues);
+    setShowCompanyFields(false);
+    setShow2ndStep(false);
+    setOpenDialog(false);
+    setWorkExperienceData(undefined);
+  };
+
+  const onSubmit = (values: z.infer<typeof workExpDialogFormSchema>) => {
+    if (!getProfileQuery.data?.id) return;
+
+    // preproccess urls
+    if (values.companyWebsite) {
+      values.companyWebsite = addHTTPS(values.companyWebsite);
+    }
+    if (values.companyLinkedIn) {
+      values.companyLinkedIn = addHTTPS(values.companyLinkedIn);
+    }
+
+    saveWorkExprienceMutation.mutate(
+      {
+        id: currWorkExperienceId,
+        profileId: getProfileQuery.data?.id,
+        data: values,
+      },
+      {
+        onSuccess: () => {
+          queryClient
+            .invalidateQueries([
+              ["jobSeekerProfile", "getJobseekerProfile"],
+              {
+                type: "query",
+              },
+            ])
+            .catch(() => {
+              console.log("Failed to invalidate job seeker profile query");
+            });
+          closeDialog();
+        },
+      }
+    );
+  };
+
+  const goTo2ndStep = async () => {
+    const valid = await form.trigger();
+    if (!valid) return;
+    setShow2ndStep(true);
   };
 
   return (
-    <Dialog>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       {children}
       <DialogContent>
         <DialogHeader>
@@ -121,273 +189,315 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
               onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
               className="space-y-8"
             >
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Job Title</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="e.g. 'Frontend Engineer'"
-                        {...field}
-                      />
-                    </FormControl>
-                    {/* <FormDescription>Enter your job title</FormDescription> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Job Description{" "}
-                      <span className="text-xs text-gray-500">(optional)</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Tell us a little bit about your role in this job"
-                        className="resize-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Collapsible
-                open={showCompanyFields}
-                onOpenChange={setShowCompanyFields}
-              >
-                <CollapsibleTrigger>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm font-medium">
-                      Company Details
-                    </span>
-                    <Button variant="ghost" size="sm" className="w-9 p-0">
-                      {showCompanyFields ? (
-                        <BsChevronBarContract/>
-                        ) : (
-                        <BsChevronBarExpand />
-                      )}
-                      <span className="sr-only">Toggle</span>
-                    </Button>
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
+              {!show2ndStep && (
+                <>
                   <FormField
                     control={form.control}
-                    name="company"
+                    name="title"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Company Name</FormLabel>
+                        <FormLabel>Job Title</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g. 'BitJobs'" {...field} />
+                          <Input
+                            placeholder="e.g. 'Frontend Engineer'"
+                            {...field}
+                          />
                         </FormControl>
+                        {/* <FormDescription>Enter your job title</FormDescription> */}
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <div className="grid grid-cols-2 space-x-4">
-                    <FormField
-                      control={form.control}
-                      name="city"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            City{" "}
-                            <span className="text-xs text-gray-500">
-                              (optional)
-                            </span>
-                          </FormLabel>
-                          <FormControl>
-                            <Input placeholder="e.g. 'London'" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="country"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Country{" "}
-                            <span className="text-xs text-gray-500">
-                              (optional)
-                            </span>
-                          </FormLabel>
-                          <FormControl>
-                            <Input placeholder="e.g. 'UK'" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
                   <FormField
                     control={form.control}
-                    name="companyWebsite"
+                    name="description"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Company Website{" "}
+                          Job Description{" "}
                           <span className="text-xs text-gray-500">
                             (optional)
                           </span>
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="https://" {...field} />
+                          <Textarea
+                            placeholder="Tell us a little bit about your role in this job"
+                            className="resize-none"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="companyLinkedIn"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          Company LinkedIn Profile{" "}
-                          <span className="text-xs text-gray-500">
-                            (optional)
-                          </span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input placeholder="https://" {...field} />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </CollapsibleContent>
-              </Collapsible>
-              <FormField
-                control={form.control}
-                name="employmentType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Employment Type </FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-wrap gap-4"
-                      >
-                        {Object.values(EmploymentType).map((type) => (
-                          <FormItem
-                            className="flex items-center space-x-3 space-y-0 border-r border-black pr-4 last:border-r-0 last:pr-0"
-                            key={type}
-                          >
+                  <Collapsible
+                    open={showCompanyFields}
+                    onOpenChange={setShowCompanyFields}
+                  >
+                    <CollapsibleTrigger>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm font-medium">
+                          Company Details
+                        </span>
+                        <span className="w-9 p-0">
+                          {showCompanyFields ? (
+                            <BsChevronBarContract />
+                          ) : (
+                            <BsChevronBarExpand />
+                          )}
+                          <span className="sr-only">Toggle</span>
+                        </span>
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-4">
+                      <FormField
+                        control={form.control}
+                        name="company"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Company Name</FormLabel>
                             <FormControl>
-                              <RadioGroupItem value={type} />
+                              <Input placeholder="e.g. 'BitJobs'" {...field} />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              {type}
-                            </FormLabel>
+                            <FormMessage />
                           </FormItem>
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
+                        )}
+                      />
+                      <div className="grid grid-cols-2 space-x-4">
+                        <FormField
+                          control={form.control}
+                          name="city"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                City{" "}
+                                <span className="text-xs text-gray-500">
+                                  (optional)
+                                </span>
+                              </FormLabel>
+                              <FormControl>
+                                <Input placeholder="e.g. 'London'" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="country"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                Country{" "}
+                                <span className="text-xs text-gray-500">
+                                  (optional)
+                                </span>
+                              </FormLabel>
+                              <FormControl>
+                                <Input placeholder="e.g. 'UK'" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="companyWebsite"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              Company Website{" "}
+                              <span className="text-xs text-gray-500">
+                                (optional)
+                              </span>
+                            </FormLabel>
+                            <FormControl>
+                              <Input placeholder="https://" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="companyLinkedIn"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              Company LinkedIn Profile{" "}
+                              <span className="text-xs text-gray-500">
+                                (optional)
+                              </span>
+                            </FormLabel>
+                            <FormControl>
+                              <Input placeholder="https://" {...field} />
+                            </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="startDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>From</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </CollapsibleContent>
+                  </Collapsible>
+                  <FormField
+                    control={form.control}
+                    name="employmentType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Employment Type </FormLabel>
                         <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex flex-wrap gap-4"
                           >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <SlCalender className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
+                            {Object.values(EmploymentType).map((type) => (
+                              <FormItem
+                                className="flex items-center space-x-3 space-y-0 border-r border-black pr-4 last:border-r-0 last:pr-0"
+                                key={type}
+                              >
+                                <FormControl>
+                                  <RadioGroupItem value={type} />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  {type}
+                                </FormLabel>
+                              </FormItem>
+                            ))}
+                          </RadioGroup>
                         </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          captionLayout="dropdown"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date: Date) => date > new Date()}
-                          initialFocus
-                          fromYear={1990}
-                          toYear={new Date().getFullYear()}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="startDate"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>From</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-[240px] pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <SlCalender className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              captionLayout="dropdown"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              disabled={(date: Date) => date > new Date()}
+                              initialFocus
+                              fromYear={1990}
+                              toYear={new Date().getFullYear()}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="endDate"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>To</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-[240px] pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <SlCalender className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              captionLayout="dropdown"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              disabled={(date: Date) => date > new Date()}
+                              initialFocus
+                              fromYear={1990}
+                              toYear={new Date().getFullYear()}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+
+              {show2ndStep && (
+                <>
+                  <SkillsTagManager
+                    onChange={(skills) => {
+                      form.setValue("skills", skills);
+                    }}
+                    defaultSkills={form.getValues("skills")}
+                  />
+                </>
+              )}
+
+              <div className="flex justify-end gap-4">
+                {show2ndStep && (
+                  <>
+                    <button
+                      type="button"
+                      className="btn-outline btn"
+                      onClick={() => setShow2ndStep(false)}
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn-primary btn"
+                      disabled={saveWorkExprienceMutation.isLoading}
+                    >
+                      Save
+                    </button>
+                  </>
                 )}
-              />
-              <FormField
-                control={form.control}
-                name="endDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>To</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <SlCalender className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          captionLayout="dropdown"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date: Date) => date > new Date()}
-                          initialFocus
-                          fromYear={1990}
-                          toYear={new Date().getFullYear()}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
+                {!show2ndStep && (
+                  <button
+                    type="button"
+                    className="btn-primary btn"
+                    onClick={() => void goTo2ndStep()}
+                  >
+                    Next
+                  </button>
                 )}
-              />
-              <div className="flex justify-end">
-                <button type="submit" className="btn-primary btn">
-                  Submit
-                </button>
               </div>
             </form>
           </Form>

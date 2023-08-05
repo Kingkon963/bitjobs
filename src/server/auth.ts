@@ -55,6 +55,19 @@ export const authOptions: NextAuthOptions = {
         if (user.role === UserRole?.Employer) {
           // redirect to employer onboarding
         }
+
+        if (user.role === UserRole?.Jobseeker) {
+          // create a jobseeker profile
+          prisma.jobseekerProfile.create({
+            data: {
+              userId: user.id,
+              firstName: user?.name?.split(" ")[0] ?? "",
+              lastName: user?.name?.split(" ")[1] ?? "",
+            },
+          })
+          .then((res) => console.log("🚀 ~ file: auth.ts:67 ~ signIn ~ res: Jobseeker Profile Created:", res))
+          .catch((err) => console.log("🚀 ~ file: auth.ts:68 ~ signIn ~ err: Failed to create Jobseeker Profile", err));
+        }
       }
     },
   },

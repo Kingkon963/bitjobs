@@ -1,17 +1,29 @@
+import EditWorkExperienceDialog from "@components/jobseeker/profile/EditWorkExperienceDialog";
 import PersonalInfo from "@components/jobseeker/profile/PersonalInfo";
 import UploadCV from "@components/jobseeker/profile/UploadCV";
 import WorkExperienceList from "@components/jobseeker/profile/WorkExperienceList";
 import JobseekerLayout from "@components/layouts/JobseekerLayout";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 import { type NextPage } from "next";
+import { BsPlusCircle } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
+import useWorkExperience from "~/hooks/stores/useWorkExperience";
 
 const JobseekerProfilePage: NextPage = () => {
+  const setOpenWeDialog = useWorkExperience((store) => store.setOpenDialog);
+  const resetWorkExperienceData = useWorkExperience((store) => store.reset);
+
+  const openAddWorkExperienceDialog = () => {
+    resetWorkExperienceData();
+    setOpenWeDialog(true);
+  };
+
   return (
     <>
       <JobseekerLayout>
-        <div className="flex gap-2 mb-24">
+        <div className="mb-24 flex gap-2">
           {/* Left panel */}
-          <div className="max-w-xs flex-1 border p-2 sticky top-10 ">
+          <div className="sticky top-10 max-w-xs flex-1 border p-2 ">
             <div className="flex flex-col items-center justify-center">
               <div className="avatar">
                 <div className="w-24 rounded-full">
@@ -54,9 +66,7 @@ const JobseekerProfilePage: NextPage = () => {
                 >
                   Education
                 </label>
-                <div className="collapse-content">
-                  Education
-                </div>
+                <div className="collapse-content">Education</div>
               </div>
               <div className="collapse bg-base-200">
                 <input
@@ -66,9 +76,17 @@ const JobseekerProfilePage: NextPage = () => {
                 />
                 <label
                   htmlFor="profile-info-accordion-3"
-                  className="collapse-title text-xl font-medium"
+                  className="collapse-title flex items-center text-xl font-medium"
                 >
-                  Work Experience
+                  <span className="flex-1">Work Experience</span>
+                  <EditWorkExperienceDialog>
+                    <button
+                      className="btn-ghost btn"
+                      onClick={openAddWorkExperienceDialog}
+                    >
+                      <BsPlusCircle className="ml-0 inline-block h-5 w-5" /> Add
+                    </button>
+                  </EditWorkExperienceDialog>
                 </label>
                 <div className="collapse-content">
                   <WorkExperienceList />
