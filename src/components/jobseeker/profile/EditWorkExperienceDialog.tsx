@@ -45,7 +45,7 @@ import { api } from "@utils/api";
 import { useQueryClient } from "@tanstack/react-query";
 import addHTTPS from "@utils/addHTTPS";
 
-const formSchema = z.object({
+export const workExpDialogFormSchema = z.object({
   title: z
     .string({
       required_error: "Title is required",
@@ -78,8 +78,8 @@ type EditWorkExperienceDialogProps = {
 };
 
 function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof workExpDialogFormSchema>>({
+    resolver: zodResolver(workExpDialogFormSchema),
     defaultValues: {
       title: "",
       company: "",
@@ -129,7 +129,7 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
     setOpen(false);
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof workExpDialogFormSchema>) => {
     if (!getProfileQuery.data?.id) return;
     
     // preproccess urls
