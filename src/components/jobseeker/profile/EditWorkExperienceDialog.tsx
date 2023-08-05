@@ -73,6 +73,19 @@ export const workExpDialogFormSchema = z.object({
   skills: z.array(z.string()).optional(),
 });
 
+const defaultValues: z.infer<typeof workExpDialogFormSchema> = {
+  title: "",
+  company: "",
+  city: "",
+  country: "",
+  companyWebsite: "",
+  companyLinkedIn: "",
+  employmentType: EmploymentType.FullTime,
+  description: "",
+  startDate: new Date(),
+  endDate: new Date(),
+};
+
 type EditWorkExperienceDialogProps = {
   // can pass only DialogTrigger
   children: React.ReactNode;
@@ -81,18 +94,7 @@ type EditWorkExperienceDialogProps = {
 function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
   const form = useForm<z.infer<typeof workExpDialogFormSchema>>({
     resolver: zodResolver(workExpDialogFormSchema),
-    defaultValues: {
-      title: "",
-      company: "",
-      city: "",
-      country: "",
-      companyWebsite: "",
-      companyLinkedIn: "",
-      employmentType: EmploymentType.FullTime,
-      description: "",
-      startDate: new Date(),
-      endDate: new Date(),
-    },
+    defaultValues,
   });
   const [showCompanyFields, setShowCompanyFields] = React.useState(false);
   const [show2ndStep, setShow2ndStep] = React.useState(false);
@@ -116,13 +118,14 @@ function EditWorkExperienceDialog({ children }: EditWorkExperienceDialogProps) {
 
   // set form data if there is any
   useEffect(() => {
+    form.reset(defaultValues);
     if (workExperienceData) {
       form.reset(workExperienceData);
     }
-  }, [workExperienceData]);
+  }, [form, workExperienceData]);
 
   const closeDialog = () => {
-    form.reset(form.formState.defaultValues);
+    form.reset(defaultValues);
     setShowCompanyFields(false);
     setShow2ndStep(false);
     setOpenDialog(false);
