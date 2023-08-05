@@ -26,6 +26,7 @@ export const jobSeekerProfileRouter = createTRPCRouter({
   saveWorkExperience: protectedJobseekerProcedure
     .input(
       z.object({
+        id: z.string().optional(),
         profileId: z.string(),
         data: workExpDialogFormSchema,
       })
@@ -42,6 +43,29 @@ export const jobSeekerProfileRouter = createTRPCRouter({
         });
       }
 
+      if(input.id) {
+        // update
+        const workExperience = await prisma.workExperience.update({
+          where: { id: input.id },
+          data: {
+            title: input.data.title,
+            company: input.data.company,
+            city: input.data.city,
+            country: input.data.country,
+            companyWebsite: input.data.companyWebsite,
+            companyLinkedIn: input.data.companyLinkedIn,
+            employmentType: input.data.employmentType,
+            description: input.data.description,
+            startDate: input.data.startDate,
+            endDate: input.data.endDate,
+            skills: input.data.skills,
+          },
+        });
+
+        return workExperience;
+      }
+
+      // create
       const workExperience = await prisma.workExperience.create({
         data: {
           profileId: input.profileId,

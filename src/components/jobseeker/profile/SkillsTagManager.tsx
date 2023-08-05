@@ -5,15 +5,20 @@ import React from "react";
 
 interface SkillsTagManagerProps {
   onChange?: (skills: string[]) => void;
+  defaultSkills?: string[];
 }
 
-function SkillsTagManager({ onChange }: SkillsTagManagerProps) {
+function SkillsTagManager({ onChange, defaultSkills }: SkillsTagManagerProps) {
   const [skillField, setSkillField] = React.useState<string>("");
   const [skills, setSkills] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     if (onChange) onChange(skills);
   }, [onChange, skills]);
+
+  React.useEffect(() => {
+    if (defaultSkills) setSkills(defaultSkills);
+  }, [defaultSkills]);
 
   const handleDelete = (index: number) => {
     const newSkills = [...skills];
