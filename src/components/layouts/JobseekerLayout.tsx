@@ -1,7 +1,14 @@
+import React from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface JobseekerLayoutProps {
   children: React.ReactNode;
@@ -11,7 +18,7 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
   const { data: userData } = useSession();
 
   return (
-    <div className="mx-auto max-w-screen-xl mt-4">
+    <div className="mx-auto mt-4 max-w-screen-xl">
       <div className="navbar bg-base-100">
         <div className="flex-1">
           <Link href={"/"} className="btn-ghost btn text-4xl normal-case">
@@ -19,41 +26,25 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
           </Link>
         </div>
         <div className="flex-none gap-2">
-          <div className="form-control">
-            <input
-              type="text"
-              placeholder="Search"
-              className="input-bordered input"
-            />
-          </div>
-          <div className="dropdown-end dropdown">
-            <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
-              <div className="w-10 rounded-full">
-                <Image
-                  src={userData?.user?.image || "/avatar.png"}
-                  width={40}
-                  height={40}
-                  alt="avatar"
-                />
-              </div>
-            </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow z-[1000]"
-            >
-              <li>
-                <Link href={"/jobseeker/profile"} className="justify-between">
-                  Profile
-                </Link>
-              </li>
-              <li>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar>
+                <AvatarImage src={userData?.user?.image || "/avatar.png"} />
+                <AvatarFallback>{userData?.user?.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <Link href={"/jobseeker/profile"}>
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem>
                 <a>Settings</a>
-              </li>
-              <li>
-                <Link href={"/api/auth/signout"}>Logout</Link>
-              </li>
-            </ul>
-          </div>
+              </DropdownMenuItem>
+              <Link href={"/api/auth/signout"}>
+                <DropdownMenuItem>Logout</DropdownMenuItem>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       <main className="mt-16">{children}</main>
