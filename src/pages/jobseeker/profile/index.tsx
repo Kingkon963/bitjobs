@@ -1,5 +1,6 @@
 import EditEducationDialog from "@components/jobseeker/profile/EditEducationDialog";
 import EditWorkExperienceDialog from "@components/jobseeker/profile/EditWorkExperienceDialog";
+import EducationList from "@components/jobseeker/profile/EducationList";
 import PersonalInfo from "@components/jobseeker/profile/PersonalInfo";
 import UploadCV from "@components/jobseeker/profile/UploadCV";
 import WorkExperienceList from "@components/jobseeker/profile/WorkExperienceList";
@@ -60,6 +61,7 @@ const JobseekerProfilePage: NextPage = () => {
                   type="radio"
                   name="profile-info-accordion"
                   id="profile-info-accordion-2"
+                  className="border border-red-500"
                 />
                 <label
                   htmlFor="profile-info-accordion-2"
@@ -77,6 +79,9 @@ const JobseekerProfilePage: NextPage = () => {
                     </DialogTrigger>
                   </EditEducationDialog>
                 </label>
+                <div className="collapse-content">
+                  <EducationList />
+                </div>
               </div>
               <div className="collapse bg-base-200">
                 <input

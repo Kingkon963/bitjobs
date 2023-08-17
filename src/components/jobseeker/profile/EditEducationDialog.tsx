@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@utils/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const educationDialogSchema = z.object({
   school: z.string().refine((val) => val.trim().length > 0, {
@@ -52,27 +53,42 @@ type EditEducationDialogProps = {
 
 function EditEducationDialog({ children }: EditEducationDialogProps) {
   const [open, setOpen] = React.useState(false);
+  const queryClient = useQueryClient();
   const form = useForm<EducationDialogSchemaType>({
     resolver: zodResolver(educationDialogSchema),
     defaultValues,
   });
   const getProfileQuery = api.jobSeekerProfile.getJobseekerProfile.useQuery();
-  const saveEducationMutation = api.jobSeekerProfile.saveEducation.useMutation();
+  const saveEducationMutation =
+    api.jobSeekerProfile.saveEducation.useMutation();
 
   const onSubmit = (values: EducationDialogSchemaType) => {
     console.log(values);
     if (!getProfileQuery.data?.id) {
       return;
     }
-    saveEducationMutation.mutate({
-      profileId: getProfileQuery.data?.id,
-      data: values,
-    }, {
-      onSuccess: () => {
-        setOpen(false);
-        form.reset();
+    saveEducationMutation.mutate(
+      {
+        profileId: getProfileQuery.data?.id,
+        data: values,
+      },
+      {
+        onSuccess: () => {
+          setOpen(false);
+          form.reset();
+          queryClient
+            .invalidateQueries([
+              ["jobSeekerProfile", "getEducations"],
+              {
+                type: "query",
+              },
+            ])
+            .catch(() => {
+              console.log("Failed to invalidate getEducations query");
+            });
+        },
       }
-    });
+    );
   };
 
   return (

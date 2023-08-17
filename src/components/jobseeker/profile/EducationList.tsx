@@ -6,43 +6,44 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationIcon } from "@heroicons/react/solid";
 import EmptyState from "@components/EmptyState";
+import EducationCard from "./EducationCard";
 
-function WorkExperienceList() {
-  const getProfileQuery = api.jobSeekerProfile.getJobseekerProfile.useQuery();
+function EducationList() {
+  const getEducationsQuery = api.jobSeekerProfile.getEducations.useQuery();
 
   return (
     <div>
       <div className="flex flex-col gap-4">
-        {getProfileQuery.isLoading && (
+        {getEducationsQuery.isLoading && (
           <Skeleton className="h-[200px] w-full bg-neutral-300" />
         )}
-        {getProfileQuery.isError && (
+        {getEducationsQuery.isError && (
           <>
             <Alert>
               <ExclamationIcon className="mr-2 h-5 w-5 text-yellow-500" />
               <AlertTitle>We are sorry!</AlertTitle>
               <AlertDescription>
                 Failed to load work experiences. <br />
-                {getProfileQuery.error.message}
+                {getEducationsQuery.error.message}
               </AlertDescription>
             </Alert>
           </>
         )}
-        {getProfileQuery.isSuccess &&
-          (!getProfileQuery.data ||
-            !Array.isArray(getProfileQuery.data?.workExperience) ||
-            getProfileQuery?.data?.workExperience.length === 0) && (
+        {getEducationsQuery.isSuccess &&
+          (!getEducationsQuery.data ||
+            !Array.isArray(getEducationsQuery.data) ||
+            getEducationsQuery?.data.length === 0) && (
             <>
               <EmptyState title="Found nothing here" hideBtn={true} />
             </>
           )}
-        {getProfileQuery.isSuccess && getProfileQuery.data && 
-          Array.isArray(getProfileQuery.data?.workExperience) &&
-          getProfileQuery?.data?.workExperience.length > 0 && getProfileQuery?.data?.workExperience.map((experience) => {
+        {getEducationsQuery.isSuccess && getEducationsQuery.data && 
+          Array.isArray(getEducationsQuery.data) &&
+          getEducationsQuery?.data?.length > 0 && getEducationsQuery?.data?.map((education) => {
             return (
-              <WorkExperienceCard
-                key={experience.id}
-                workExperience={experience}
+              <EducationCard
+                key={education.id}
+                education={education}
               />
             );
           })
@@ -52,4 +53,4 @@ function WorkExperienceList() {
   );
 }
 
-export default WorkExperienceList;
+export default EducationList;
