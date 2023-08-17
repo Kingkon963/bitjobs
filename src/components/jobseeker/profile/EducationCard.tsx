@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,25 +16,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
-import { BsGlobe2, BsThreeDotsVertical } from "react-icons/bs";
-import {
-  AiOutlineArrowUp,
-  AiOutlineArrowDown,
-  AiOutlineLinkedin,
-} from "react-icons/ai";
-import DisplayTags from "@components/common/DisplayTags";
+
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { type Education } from "@prisma/client";
 import { api } from "@utils/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { format, formatDistance } from "date-fns";
-import useWorkExperience from "~/hooks/stores/useWorkExperience";
 
 interface EducationCardProps {
   education: Education;
