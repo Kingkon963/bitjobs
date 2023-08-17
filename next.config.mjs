@@ -22,7 +22,7 @@ const config = {
   },
 
   images: {
-    domains: ["api.lorem.space", "lh3.googleusercontent.com"],
+    domains: ["api.lorem.space", "lh3.googleusercontent.com", "uploadthing.com"],
   },
 
   experimental: {

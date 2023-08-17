@@ -10,23 +10,57 @@ import {
 import { TRPCError } from "@trpc/server";
 
 export const companyRouter = createTRPCRouter({
-  create: protectedEmployerProcedure
+  save: protectedEmployerProcedure
     .input(
       z.object({
-        name: z.string(),
-        location: z.string(),
-        userId: z.string(),
+        id: z.string().optional(),
+        name: z.string().optional(),
+        location: z.string().optional(),
+        imageUrl: z.string().optional(),
+        userId: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const company = await ctx.prisma.company.create({
-        data: {
-          name: input.name,
-          location: input.location,
-          userId: ctx.session.user.id,
-        },
+      if (input.id) {
+        // update
+        const company = await ctx.prisma.company.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            name: input.name,
+            location: input.location,
+            imageUrl: input.imageUrl,
+          },
+        });
+        return company;
+      }
+
+      if(input.userId) {
+        // create
+        if(!input.name || !input.location) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Missing name or location",
+          });
+        }
+        
+        const company = await ctx.prisma.company.create({
+          data: {
+            name: input.name,
+            location: input.location,
+            imageUrl: input.imageUrl,
+            userId: ctx.session.user.id,
+          },
+        });
+        return company;
+      }
+
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Missing id or userId",
       });
-      return company;
+
     }),
 
   get: publicProcedure
