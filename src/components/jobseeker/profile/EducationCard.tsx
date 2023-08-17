@@ -72,9 +72,8 @@ function EducationCard({ education }: EducationCardProps) {
       <h1 className="text-xl">{education.school}</h1>
       <h2 className="flex items-center gap-2">
         <span>{education.degree}</span>
-        <span>•</span>
+        {education.fieldOfStudy && education.degree && <span>•</span>}
         <span>{education.fieldOfStudy}</span>
-        <span>•</span>
       </h2>
       {education.startDate && (
         <h3 className="text-sm text-gray-500">
