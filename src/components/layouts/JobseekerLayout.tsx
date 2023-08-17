@@ -29,7 +29,7 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
-                <AvatarImage src={userData?.user?.image || ""} />
+                <AvatarImage src={userData?.user?.image || ""} alt={userData?.user?.name || ""}/>
                 <AvatarFallback>{userData?.user?.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
