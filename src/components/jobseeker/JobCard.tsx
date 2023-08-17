@@ -17,10 +17,31 @@ function JobCard(props: JobCardProps) {
   const { job } = props;
 
   return (
-    <div className="card bordered flex flex-col gap-4 shadow-lg">
-      <div className="card-body">
-        <div className="flex gap-4">
-          <div className="h-16 w-16 flex-none rounded-full bg-base-200"></div>
+    <div className="bordered card flex flex-col gap-4 shadow-lg">
+      <div className="container card-body">
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <div className="flex">
+            <div className="h-16 w-16 flex-none rounded-full bg-base-200"></div>
+            <div className="flex-none ml-auto sm:hidden">
+              <button className="btn-ghost btn-sm btn rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon icon-tabler icon-tabler-bookmark"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" />
+                  <path d="M8 4v16l4 -4.5l4 4.5v-16z" />
+                </svg>
+              </button>
+            </div>
+          </div>
           <div className="flex-1">
             <div className="flex gap-2">
               <div className="flex-1">
@@ -32,7 +53,7 @@ function JobCard(props: JobCardProps) {
                   📍 {job.location?.line1}, {job.location?.borough?.at(0)}
                 </p>
               </div>
-              <div className="flex-none">
+              <div className="hidden flex-none sm:block">
                 <button className="btn-ghost btn-sm btn rounded-full">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

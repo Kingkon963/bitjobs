@@ -18,7 +18,7 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
   const { data: userData } = useSession();
 
   return (
-    <div className="mx-auto mt-4 max-w-screen-xl">
+    <div className="mx-4 xl:mx-auto mt-4 max-w-screen-xl">
       <div className="navbar bg-base-100">
         <div className="flex-1">
           <Link href={"/"} className="btn-ghost btn text-4xl normal-case">
@@ -29,7 +29,7 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
-                <AvatarImage src={userData?.user?.image || "/avatar.png"} />
+                <AvatarImage src={userData?.user?.image || ""} />
                 <AvatarFallback>{userData?.user?.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>

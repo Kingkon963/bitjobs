@@ -6,7 +6,7 @@ const JobseekerPage: NextPage = () => {
   return (
     <JobseekerLayout>
       <div className="flex gap-2">
-        <div className="max-w-xs flex-1 border p-2">a</div>
+        <div className="hidden xl:block max-w-xs flex-1 border p-2">a</div>
         <div className="flex-1 border p-2">
           <JobFeed />
         </div>
