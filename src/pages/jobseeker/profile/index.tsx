@@ -1,3 +1,4 @@
+import EditEducationDialog from "@components/jobseeker/profile/EditEducationDialog";
 import EditWorkExperienceDialog from "@components/jobseeker/profile/EditWorkExperienceDialog";
 import PersonalInfo from "@components/jobseeker/profile/PersonalInfo";
 import UploadCV from "@components/jobseeker/profile/UploadCV";
@@ -23,7 +24,7 @@ const JobseekerProfilePage: NextPage = () => {
       <JobseekerLayout>
         <div className="mb-24 flex gap-2">
           {/* Left panel */}
-          <div className="sticky top-10 max-w-xs flex-1 border p-2 ">
+          <div className="sticky top-10 max-w-xs flex-1 p-2 ">
             <div className="flex flex-col items-center justify-center">
               <div className="avatar">
                 <div className="w-24 rounded-full">
@@ -36,7 +37,7 @@ const JobseekerProfilePage: NextPage = () => {
 
           {/* Right panel */}
           <div className="flex-1">
-            <div className="flex w-full flex-col gap-4 border p-2">
+            <div className="flex w-full flex-col gap-4 p-2">
               <div className="collapse overflow-visible bg-base-200">
                 <input
                   type="radio"
@@ -62,11 +63,20 @@ const JobseekerProfilePage: NextPage = () => {
                 />
                 <label
                   htmlFor="profile-info-accordion-2"
-                  className="collapse-title text-xl font-medium"
+                  className="collapse-title flex items-center text-xl font-medium"
                 >
-                  Education
+                  <span className="flex-1">Education</span>
+                  <EditEducationDialog>
+                    <DialogTrigger
+                      className="btn-ghost btn"
+                      onClick={() => {
+                        console.log("clicked");
+                      }}
+                    >
+                      <BsPlusCircle className="ml-0 inline-block h-5 w-5" /> Add
+                    </DialogTrigger>
+                  </EditEducationDialog>
                 </label>
-                <div className="collapse-content">Education</div>
               </div>
               <div className="collapse bg-base-200">
                 <input

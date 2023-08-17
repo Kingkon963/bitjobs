@@ -165,11 +165,10 @@ model JobseekerProfile {
 model Education {
     id           String           @id @default(cuid())
     school       String
-    degree       String
-    fieldOfStudy String
-    startDate    DateTime
-    endDate      DateTime
-    grade        String
+    degree       String?
+    fieldOfStudy String?
+    startDate    DateTime?
+    endDate      DateTime?
     description  String?
     profile      JobseekerProfile @relation(fields: [profileId], references: [id])
     profileId    String
