@@ -18,7 +18,7 @@ interface CompanyLogoProps {
 function CompanyLogo({ companyId, logoUrl, alt }: CompanyLogoProps) {
   const queryClient = useQueryClient();
   const saveCompany = api.company.save.useMutation();
-  const { startUpload, isUploading } = useUploadThing("imageUploader", {
+  const { startUpload, isUploading, permittedFileInfo } = useUploadThing("imageUploader", {
     onClientUploadComplete: (res) => {
       if (Array.isArray(res) && res.length > 0 && res.at(0)?.fileUrl) {
         saveCompany
@@ -60,6 +60,7 @@ function CompanyLogo({ companyId, logoUrl, alt }: CompanyLogoProps) {
       <Button variant={"link"} className="absolute -right-3 -top-3 m-0 p-0">
         <input
           type="file"
+          accept={"image/*"}
           className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
           onChange={(e) => {
             const file = e.target.files?.[0];
