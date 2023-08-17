@@ -191,6 +191,7 @@ export const jobRouter = createTRPCRouter({
           company: {
             select: {
               name: true,
+              imageUrl: true,
             },
           },
           location: {
