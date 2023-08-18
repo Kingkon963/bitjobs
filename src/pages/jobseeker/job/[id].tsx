@@ -9,7 +9,7 @@ import { prisma } from "~/server/db";
 import { type Job, JobStatus } from "@prisma/client";
 
 type PageProp = {
-  job: Pick<Job, "title">;
+  job?: Pick<Job, "title" | "refId">;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -62,6 +62,7 @@ export const getStaticProps: GetStaticProps<PageProp> = async ({ params }) => {
   const props = {
     job: {
       title: job.title,
+      refId: job.refId
     },
   } satisfies PageProp;
 
@@ -74,6 +75,9 @@ export const getStaticProps: GetStaticProps<PageProp> = async ({ params }) => {
 function JobDetailPage({
   job,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+
+  if(!job) return null;
+
   return (
     <JobseekerLayout>
       <div>

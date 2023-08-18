@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 function LandingNavbar() {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log("🚀 ~ file: LandingNavbar.tsx:11 ~ LandingNavbar ~ session:", session)
 
   const isHiringPage = router.pathname === "/hiring";
 
