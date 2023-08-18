@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { type Job } from "@prisma/client";
+import Link from "next/link";
 import React from "react";
 
 interface JobCardProps {
@@ -24,7 +25,7 @@ function JobCard(props: JobCardProps) {
         <div className="flex flex-col gap-4 sm:flex-row">
           <div className="flex">
             <div className="h-16 w-16 flex-none rounded-full bg-base-200">
-              <Avatar className="w-full h-full">
+              <Avatar className="h-full w-full">
                 <AvatarImage
                   src={job.company?.imageUrl || ""}
                   alt={job.company?.name || "company logo"}
@@ -54,7 +55,7 @@ function JobCard(props: JobCardProps) {
                 </AvatarFallback>
               </Avatar>
             </div>
-            <div className="flex-none ml-auto sm:hidden">
+            <div className="ml-auto flex-none sm:hidden">
               <button className="btn-ghost btn-sm btn rounded-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +78,9 @@ function JobCard(props: JobCardProps) {
           <div className="flex-1">
             <div className="flex gap-2">
               <div className="flex-1">
-                <h2 className="card-title">{job.title}</h2>
+                <Link href={`/jobseeker/job/${job.refId}`}>
+                  <h2 className="card-title">{job.title}</h2>
+                </Link>
                 <p className="text-base-content text-opacity-60">
                   {job.employmentType} @ <b>{job.company?.name}</b>
                 </p>

@@ -18,10 +18,10 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
   const { data: userData } = useSession();
 
   return (
-    <div className="mx-4 xl:mx-auto mt-4 max-w-screen-xl">
-      <div className="navbar bg-base-100">
+    <div className="mx-4 xl:mx-auto mt-4 max-w-screen-xl border">
+      <div className="navbar bg-base-100 border">
         <div className="flex-1">
-          <Link href={"/"} className="btn-ghost btn text-4xl normal-case">
+          <Link href={"/"} className="btn-link decoration-transparent text-base-content btn text-4xl normal-case">
             BitJobs
           </Link>
         </div>
@@ -47,7 +47,7 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
           </DropdownMenu>
         </div>
       </div>
-      <main className="mt-16">{children}</main>
+      <main className="mt-16 px-2">{children}</main>
     </div>
   );
 }
