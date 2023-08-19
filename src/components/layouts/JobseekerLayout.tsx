@@ -18,10 +18,10 @@ function JobseekerLayout({ children }: JobseekerLayoutProps) {
   const { data: userData } = useSession();
 
   return (
-    <div className="mx-4 xl:mx-auto mt-4 max-w-screen-xl border">
-      <div className="navbar bg-base-100 border">
+    <div className="mx-4 xl:mx-auto mt-4 max-w-screen-xl">
+      <div className="navbar bg-base-100 border-b">
         <div className="flex-1">
-          <Link href={"/"} className="btn-link decoration-transparent text-base-content btn text-4xl normal-case">
+          <Link href={"/"} className="btn-link decoration-transparent text-base-content btn text-4xl normal-case pl-0">
             BitJobs
           </Link>
         </div>
