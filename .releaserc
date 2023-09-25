@@ -5,7 +5,8 @@
     "@semantic-release/npm"
   ],
   "branches": [
-    "main"
+    "main",
+    "develop"
   ],
   "commitAnalyzer": "conventional-changelog-cli",
   "releaseRules": [
