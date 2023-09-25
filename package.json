@@ -17,7 +17,8 @@
     "lint": "next lint",
     "start": "next start",
     "fakerAI": "ts-node --esm src/server/services/fakerAI/fakerAI.ts",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.8",
@@ -68,6 +69,9 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "@commitlint/types": "^17.4.4",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^11.0.0",
@@ -85,6 +89,7 @@
     "daisyui": "^3.1.7",
     "eslint": "^8.34.0",
     "eslint-config-next": "13.1.6",
+    "husky": "^8.0.3",
     "postcss": "^8.4.24",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.2",
