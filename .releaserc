@@ -1,11 +1,54 @@
 {
-  "plugins": ["@semantic-release/changelog", "@semantic-release/git", "@semantic-release/npm"],
-  "branches": ["main"],
+  "plugins": [
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md"
+        ]
+      }
+    ],
+    "@semantic-release/npm"
+  ],
+  "branches": [
+    {
+      "name": "main",
+      "channel": "release"
+    },
+    {
+      "name": "develop",
+      "channel": "maintenance"
+    }
+  ],
   "commitAnalyzer": "conventional-changelog-cli",
   "releaseRules": [
-    { "type": "major", "release": "major" },
-    { "type": "minor", "release": "minor" },
-    { "type": "patch", "release": "patch" },
-    { "type": "prerelease", "release": "prerelease" }
+    {
+      "type": "major",
+      "release": "major"
+    },
+    {
+      "type": "minor",
+      "release": "minor"
+    },
+    {
+      "type": "patch",
+      "release": "patch"
+    },
+    {
+      "type": "prerelease",
+      "release": "prerelease"
+    }
   ]
 }
