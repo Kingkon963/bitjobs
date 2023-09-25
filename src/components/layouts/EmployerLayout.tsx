@@ -216,6 +216,7 @@ export default function EmployerLayout({
                   </Link>
                 ))}
               </nav>
+              <span className="text-white p-4 text-right text-sm">v{process.env.NEXT_PUBLIC_APP_VERSION}</span>
             </div>
           </div>
         </div>
