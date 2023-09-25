@@ -5,8 +5,14 @@
     "@semantic-release/npm"
   ],
   "branches": [
-    "main",
-    "develop"
+    {
+      "name": "main",
+      "channel": "release"
+    },
+    {
+      "name": "develop",
+      "channel": "maintenance"
+    }
   ],
   "commitAnalyzer": "conventional-changelog-cli",
   "releaseRules": [
