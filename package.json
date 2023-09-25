@@ -1,6 +1,6 @@
 {
   "name": "bitjobs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
