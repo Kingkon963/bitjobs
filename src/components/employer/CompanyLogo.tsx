@@ -56,7 +56,7 @@ function CompanyLogo({ companyId, logoUrl, alt }: CompanyLogoProps) {
   });
 
   return (
-    <Avatar className="h-24 w-24 overflow-visible border">
+    <Avatar className="h-24 w-24 overflow-visible border group">
       <Button variant={"link"} className="absolute -right-3 -top-3 m-0 p-0">
         <input
           type="file"
@@ -71,7 +71,7 @@ function CompanyLogo({ companyId, logoUrl, alt }: CompanyLogoProps) {
           disabled={isUploading}
         />
         {isUploading && <Loading />}
-        {!isUploading && <EditIcon className="m-0 h-5 w-5 p-0" />}
+        {!isUploading && <EditIcon className="m-0 h-5 w-5 p-0 hidden group-hover:block" />}
       </Button>
       <AvatarImage src={logoUrl} alt={alt} />
       <AvatarFallback>
