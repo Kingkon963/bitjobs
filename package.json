@@ -1,6 +1,6 @@
 {
   "name": "bitjobs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -16,7 +16,8 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "fakerAI": "ts-node --esm src/server/services/fakerAI/fakerAI.ts"
+    "fakerAI": "ts-node --esm src/server/services/fakerAI/fakerAI.ts",
+    "release": "semantic-release"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.8",
@@ -67,6 +68,9 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^11.0.0",
     "@tailwindcss/typography": "^0.5.9",
     "@tanstack/react-query-devtools": "^4.29.19",
     "@types/node": "^18.13.0",
@@ -76,6 +80,8 @@
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
     "autoprefixer": "^10.4.14",
+    "commitizen": "^4.3.0",
+    "conventional-changelog-cli": "^4.1.0",
     "daisyui": "^3.1.7",
     "eslint": "^8.34.0",
     "eslint-config-next": "13.1.6",
@@ -83,6 +89,7 @@
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "prisma": "^4.16.1",
+    "semantic-release": "^22.0.5",
     "tailwindcss": "^3.3.2",
     "tailwindcss-animate": "^1.0.6",
     "ts-node": "^10.9.1",
