@@ -71,7 +71,6 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@commitlint/types": "^17.4.4",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^11.0.0",
@@ -84,7 +83,6 @@
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
     "autoprefixer": "^10.4.14",
-    "commitizen": "^4.3.0",
     "conventional-changelog-cli": "^4.1.0",
     "daisyui": "^3.1.7",
     "eslint": "^8.34.0",
