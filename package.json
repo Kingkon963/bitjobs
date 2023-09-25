@@ -17,7 +17,7 @@
     "lint": "next lint",
     "start": "next start",
     "fakerAI": "ts-node --esm src/server/services/fakerAI/fakerAI.ts",
-    "release": "semantic-release",
+    "release": "semantic-release --no-ci",
     "prepare": "husky install"
   },
   "dependencies": {
