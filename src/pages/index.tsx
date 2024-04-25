@@ -5,7 +5,6 @@ import LandingLayout from "../components/layouts/LandingLayout";
 import Redirector from "@components/Redirector";
 
 const LandingPage: NextPage = () => {
-
   return (
     <div>
       <Redirector />
@@ -34,43 +33,6 @@ const LandingPage: NextPage = () => {
               </div>
             </div>
           </div>
-          {/* <div className="mx-auto max-w-screen-2xl">
-            <h1 className="text-5xl">Trending Jobs</h1>
-            <div className="primary-content divider h-2"></div>
-            <div className="flex gap-5">
-              <div className="card relative shadow-md">
-                <figure className="relative">
-                  <Image
-                    src="https://api.lorem.space/image/shoes?w=400&h=225"
-                    alt="Shoes"
-                    width={400}
-                    height={225}
-                  />
-                  <div className="absolute bottom-0 h-fit w-full bg-gradient-to-t from-base-200  to-transparent px-7">
-                    <h2 className="card-title py-2 text-2xl">
-                      Shoe store management
-                    </h2>
-                  </div>
-                </figure>
-                <div className="card-body bg-base-200">
-                  <div className="card-text text-base">
-                    <div className="flex justify-between">
-                      <div>
-                        <div>£10.85 - £12.00 per hour</div>
-                        <div>Full-time, Permanent</div>
-                        <div>Stonebridge Ltd.</div>
-                      </div>
-                      <span>Dhanmondi, Dhaka</span>
-                    </div>
-                  </div>
-                  {/* <div className="card-actions justify-end">
-                  <div className="badge badge-outline">Fashion</div>
-                  <div className="badge badge-outline">Products</div>
-                </div> */}
-                </div>
-              </div>
-            </div>
-          </div> */}
         </main>
       </LandingLayout>
     </div>
