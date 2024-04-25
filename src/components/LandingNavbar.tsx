@@ -32,7 +32,7 @@ function LandingNavbar() {
                     void signIn("google", {}, { userRole: UserRole.Jobseeker });
                   }}
                 >
-                  Sign in
+                  Sign in as a Jobseeker
                 </button>
                 <Link href="/hiring">Hiring?</Link>
               </>
@@ -45,7 +45,7 @@ function LandingNavbar() {
                     void signIn("google", {}, { userRole: UserRole.Employer });
                   }}
                 >
-                  Sign in
+                  Sign in as an Employer
                 </button>
                 <Link href="/">Looking for Job?</Link>
               </>

@@ -22,7 +22,7 @@ export default function CTASectionForEmployer() {
                   void signIn("google", {}, { userRole: UserRole.Employer });
                 }}
               >
-                Sign up for free
+                Sign in as an employer
               </button>
             </div>
           </div>
