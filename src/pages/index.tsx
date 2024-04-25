@@ -34,7 +34,7 @@ const LandingPage: NextPage = () => {
               </div>
             </div>
           </div>
-          <div className="mx-auto max-w-screen-2xl">
+          {/* <div className="mx-auto max-w-screen-2xl">
             <h1 className="text-5xl">Trending Jobs</h1>
             <div className="primary-content divider h-2"></div>
             <div className="flex gap-5">
@@ -70,7 +70,7 @@ const LandingPage: NextPage = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </main>
       </LandingLayout>
     </div>
