@@ -16,7 +16,7 @@ function LandingNavbar() {
       <nav className="sticky top-0 bg-base-200 p-5">
         <div className="mx-auto flex max-w-screen-2xl items-center">
           <Link href="/">
-            <h1 className="text-5xl">Britjobs</h1>
+            <h1 className="text-5xl">Bitjobs</h1>
           </Link>
           <div className="ml-auto flex items-center gap-10">
             {session && session.user?.role === UserRole.Employer && (
